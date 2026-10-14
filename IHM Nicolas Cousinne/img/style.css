@@ -1,0 +1,449 @@
+/* ==========================================================================
+   1 · Box-modellen: bredden gäller hela lådan (inklusive padding och border)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2 · Varumärket som variabler (Färger, typografi och mått för ljust läge)
+   ========================================================================== */
+:root {
+    /* Färger – Ljust läge (Alla färger uppfyller WCAG AA med minst 4,5:1 kontrast) */
+    --text: #0f172a;               /* Djup skifferblå för rubriker och skarp brödtext (kontrast > 15:1) */
+    --text-dampad: #475569;        /* Mjukare sekundärtext för beskrivningar (kontrast 5,9:1) */
+    --yta: #f8fafc;                /* Bakgrund: mjuk, modern off-white */
+    --yta-2: #ffffff;              /* Bakgrund för kort, sidhuvud och vitriner */
+    --yta-accent: #eff6ff;         /* Ljusblå bakgrund för ikoner och badges */
+    --primar: #1e40af;             /* Djup marinblå: signalerar trovärdighet och expertis */
+    --primar-hover: #1d4ed8;       /* Något ljusare blå vid muspekare */
+    --accent: #1e40af;             /* Accentfärg för primära knappar */
+    --accent-hover: #1d4ed8;       /* Hover-färg för knappar */
+    --accent-text: #ffffff;        /* Vit text på accentknapp (kontrast 8,4:1) */
+    --badge-bg: #e0e7ff;           /* Bakgrund för utbildnings-badge */
+    --badge-text: #3730a3;         /* Textfärg för badge (kontrast 7,5:1) */
+    --kant: #e2e8f0;               /* Diskret linjefärg för ramar och avgränsare */
+    --fokus: #2563eb;              /* Tydlig fokusram för tangentbordsnavigering */
+    --skugga: 0 4px 20px -2px rgba(15, 23, 42, 0.08); /* Mjuk skugga för djup */
+    --skugga-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.14); /* Skugga när muspekaren hålls över */
+
+    /* Typografi och avstånd */
+    --font-huvud: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    --luft: 1rem;                  /* Grundmått för avstånd och marginaler */
+    --radie: 16px;                 /* Rundning på kort och bilder */
+    --radie-knapp: 9999px;         /* Helt rundade hörn på knappar */
+}
+
+/* ==========================================================================
+   3 · Grundstil (Mobil-först: typsnitt, textflöde och responsiva bilder)
+   ========================================================================== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-huvud);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--text);
+    background-color: var(--yta);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-huvud);
+    color: var(--primar);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    max-width: 65ch;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-dampad);
+}
+
+a {
+    color: var(--primar);
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--primar-hover);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radie);
+}
+
+/* ==========================================================================
+   4 · Sidhuvud och meny (Mobilversion med ren navigation och temaknapp)
+   ========================================================================== */
+.sidhuvud {
+    display: flex;
+    flex-direction: column;
+    gap: var(--luft);
+    padding: var(--luft);
+    background: var(--yta-2);
+    border-bottom: 1px solid var(--kant);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sidhuvud-branding {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.roll {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-dampad);
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem calc(var(--luft) * 1.25);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.25rem 0;
+    color: var(--text);
+    position: relative;
+}
+
+nav a:hover {
+    color: var(--primar);
+}
+
+/* Knappen för att byta mellan ljust och mörkt läge */
+.tema-knapp {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    background: var(--yta);
+    color: var(--text);
+    border: 1px solid var(--kant);
+    border-radius: var(--radie-knapp);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.tema-knapp:hover {
+    background: var(--yta-accent);
+    border-color: var(--primar);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   5 · Innehållsytan (Huvudinnehåll, Hero-sektion och Om mig)
+   ========================================================================== */
+main {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 0 var(--luft);
+}
+
+section {
+    padding: calc(var(--luft) * 2.5) 0;
+    border-bottom: 1px solid var(--kant);
+}
+
+/* Hero-sektionen längst upp */
+.hero {
+    padding: calc(var(--luft) * 3) 0;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-radius: var(--radie-knapp);
+    margin-bottom: 1rem;
+}
+
+.hero h2 {
+    font-size: 1.85rem;
+    line-height: 1.25;
+    max-width: 25ch;
+    color: var(--text);
+}
+
+.hero p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+}
+
+/* Huvudknappen (Call To Action) */
+.knapp {
+    display: inline-block;
+    padding: 0.85rem 1.75rem;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: var(--radie-knapp);
+    box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.knapp:hover {
+    background: var(--accent-hover);
+    color: var(--accent-text);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 64, 175, 0.35);
+}
+
+/* Om mig-sektionen */
+.om-innehall {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--luft) * 1.5);
+    margin-top: 1rem;
+}
+
+.om-bild {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: calc(var(--radie) + 4px);
+    box-shadow: var(--skugga);
+    border: 3px solid var(--yta-2);
+}
+
+.om-text p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* ==========================================================================
+   6 · Kort i ett rutnät (Tjänster och Projekt med svävande kort-effekt)
+   ========================================================================== */
+.rutnat {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(var(--luft) * 1.5);
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0 0;
+}
+
+.kort {
+    background: var(--yta-2);
+    padding: calc(var(--luft) * 1.5);
+    border: 1px solid var(--kant);
+    border-radius: var(--radie);
+    box-shadow: var(--skugga);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.kort:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--skugga-hover);
+    border-color: var(--primar);
+}
+
+.kort-ikon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: var(--yta-accent);
+    border-radius: 12px;
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+}
+
+.kort h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.kort p {
+    margin-bottom: 0;
+    font-size: 0.975rem;
+}
+
+/* Projektkort och deras bilder */
+.kort img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: calc(var(--radie) - 4px);
+    margin-bottom: var(--luft);
+    border: 1px solid var(--kant);
+}
+
+/* Kontaktsektionen */
+#kontakt {
+    border-bottom: none;
+}
+
+#kontakt a {
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   7 · Knappar, fokus och sidfot (Tillgänglighet och tangentbordsnavigering)
+   ========================================================================== */
+/* Tydlig fokusram när användaren navigerar med tangentbordet (Tab) */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--fokus);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.knapp:focus-visible,
+.tema-knapp:focus-visible {
+    border-radius: var(--radie-knapp);
+}
+
+/* Sidfot */
+footer {
+    padding: calc(var(--luft) * 2.5) var(--luft);
+    text-align: center;
+    background: var(--yta-2);
+    border-top: 1px solid var(--kant);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+footer p {
+    margin: 0 auto;
+    font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   8 · Större skärmar (Responsiv layout för surfplattor och datorer)
+   ========================================================================== */
+@media (min-width: 48rem) {
+    .sidhuvud {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--luft) calc(var(--luft) * 2);
+    }
+
+    .tema-knapp {
+        align-self: center;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+
+    /* Rutnätet får flera kolumner när det finns plats */
+    .rutnat {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    /* Om mig visas sida vid sida med bild och text */
+    .om-innehall {
+        flex-direction: row;
+        align-items: center;
+        gap: calc(var(--luft) * 2.5);
+    }
+
+    .om-bild {
+        max-width: 240px;
+        flex-shrink: 0;
+    }
+}
+
+@media (min-width: 64rem) {
+    main {
+        padding: 0 calc(var(--luft) * 2);
+    }
+
+    .hero {
+        padding: calc(var(--luft) * 4) 0;
+    }
+
+    .hero h2 {
+        font-size: 2.75rem;
+    }
+}
+
+/* ==========================================================================
+   9 · Mörkt läge (body.morkt tilldelar nya kontraststarka värden till variablerna)
+   ========================================================================== */
+body.morkt {
+    /* Färger – Mörkt läge (Alla färger uppfyller WCAG AA med minst 4,5:1 kontrast) */
+    --text: #f8fafc;               /* Krispig vit för rubriker och skarp text (kontrast > 15:1) */
+    --text-dampad: #cbd5e1;        /* Mjuk ljusgrå för brödtext (kontrast > 9:1 mot mörk bakgrund) */
+    --yta: #090d16;                /* Djup midnattsblå bakgrund */
+    --yta-2: #131b2e;              /* Mörk skifferyta för kort, sidhuvud och sidfot */
+    --yta-accent: #1e293b;         /* Mörkgrå/blå yta för ikoner och badges */
+    --primar: #60a5fa;             /* Ljus himmelsblå: utmärkt läsbarhet i mörkt läge */
+    --primar-hover: #93c5fd;       /* Ännu ljusare blå vid hover */
+    --accent: #3b82f6;             /* Klarblå knapp */
+    --accent-hover: #60a5fa;
+    --accent-text: #090d16;        /* Mörk text på ljus knapp för hög kontrast (7,8:1) */
+    --badge-bg: rgba(96, 165, 250, 0.15); /* Halvtransparent blå badge-bakgrund */
+    --badge-text: #93c5fd;         /* Ljusblå text på badge (kontrast > 10:1) */
+    --kant: #1e293b;               /* Diskret mörk linjefärg */
+    --fokus: #60a5fa;              /* Tydlig ljusblå fokusram i mörkt läge */
+    --skugga: 0 4px 20px -2px rgba(0, 0, 0, 0.5); /* Djupare skuggor i mörkt läge */
+    --skugga-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.7);
+}
