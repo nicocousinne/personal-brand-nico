@@ -105,78 +105,217 @@ img {
 }
 
 /* ==========================================================================
-   4 · Sidhuvud och meny (Mobilversion med ren navigation och temaknapp)
+   4 · Sidhuvud och meny (Modern layout med luft, transparens & kapsel-CTA)
    ========================================================================== */
 .sidhuvud {
-    display: flex;
-    flex-direction: column;
-    gap: var(--luft);
-    padding: var(--luft);
-    background: var(--yta-2);
-    border-bottom: 1px solid var(--kant);
     position: sticky;
     top: 0;
     z-index: 100;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    background-color: rgba(248, 250, 252, 0.85);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid var(--kant);
+    padding: 0.875rem var(--luft);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+body.morkt .sidhuvud {
+    background-color: rgba(9, 13, 22, 0.85);
+    border-bottom-color: var(--kant);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+}
+
+.sidhuvud-container {
+    max-width: 76rem;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--luft);
+}
+
+/* 4.1 · Logotyp och branding till vänster */
 .sidhuvud-branding {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
+    flex-shrink: 0;
 }
 
-.roll {
+.sidhuvud-branding h1 {
+    font-size: 1.35rem;
+    line-height: 1.2;
     margin: 0;
-    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--primar);
+    transition: color 0.3s ease;
+}
+
+.sidhuvud-branding .roll {
+    margin: 0;
+    font-size: 0.825rem;
     font-weight: 500;
     color: var(--text-dampad);
+    line-height: 1.3;
 }
 
-nav ul {
+/* 4.2 · Centrerade navigationslänkar */
+.sidhuvud-nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem calc(var(--luft) * 1.25);
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-lankar {
+    display: flex;
+    align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
+    gap: 0.5rem 1.75rem;
 }
 
-nav a {
+.nav-lankar a {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9375rem;
     text-decoration: none;
-    padding: 0.25rem 0;
-    color: var(--text);
+    padding: 0.35rem 0.25rem;
+    color: var(--text-dampad);
     position: relative;
+    transition: color 0.2s ease;
 }
 
-nav a:hover {
+.nav-lankar a:hover {
     color: var(--primar);
 }
 
-/* Knappen för att byta mellan ljust och mörkt läge */
-.tema-knapp {
-    align-self: flex-start;
+/* Subtil understrykning som glider ut vid hovring */
+.nav-lankar a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primar);
+    border-radius: 9999px;
+    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-lankar a:hover::after,
+.nav-lankar a:focus-visible::after {
+    width: 100%;
+    left: 0;
+}
+
+/* 4.3 · Högersektion med tema-knapp och kapselformad primär CTA */
+.sidhuvud-actions {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.875rem;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.tema-knapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.85rem;
     background: var(--yta);
     color: var(--text);
     border: 1px solid var(--kant);
     border-radius: var(--radie-knapp);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
 }
 
 .tema-knapp:hover {
     background: var(--yta-accent);
     border-color: var(--primar);
     transform: translateY(-1px);
+}
+
+/* Primär CTA-knapp (kapselformad pill-shape med cirkulär pil) */
+.sidhuvud-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.375rem 0.45rem 0.375rem 1.25rem;
+    background-color: var(--primar);
+    color: var(--accent-text);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: var(--radie-knapp);
+    box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);
+    transition: background-color 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    white-space: nowrap;
+}
+
+.sidhuvud-cta:hover {
+    background-color: var(--primar-hover);
+    color: var(--accent-text);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30, 64, 175, 0.35);
+}
+
+.sidhuvud-cta:active {
+    transform: translateY(0);
+}
+
+/* Cirkulär ikon-yta för pilen */
+.sidhuvud-cta-ikon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: var(--primar);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.sidhuvud-cta:hover .sidhuvud-cta-ikon {
+    transform: translateX(3px);
+}
+
+.sidhuvud-cta-ikon svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+}
+
+/* Mörkt läge för CTA-knapp och ikon */
+body.morkt .sidhuvud-cta {
+    background-color: var(--accent);
+    color: var(--accent-text);
+    box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35);
+}
+
+body.morkt .sidhuvud-cta:hover {
+    background-color: var(--accent-hover);
+    color: var(--accent-text);
+    box-shadow: 0 8px 26px rgba(59, 130, 246, 0.5);
+}
+
+body.morkt .sidhuvud-cta-ikon {
+    background-color: #090d16;
+    color: #ffffff;
+}
+
+/* Tillgänglighet för knappar */
+.sidhuvud-cta:focus-visible {
+    outline: 2px solid var(--fokus);
+    outline-offset: 3px;
 }
 
 /* ==========================================================================
@@ -331,13 +470,253 @@ section {
     border: 1px solid var(--kant);
 }
 
-/* Kontaktsektionen */
+/* ==========================================================================
+   6 · Kontaktsektion och formulär
+   ========================================================================== */
 #kontakt {
     border-bottom: none;
+    padding-bottom: calc(var(--luft) * 4);
 }
 
-#kontakt a {
+.kontakt-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(var(--luft) * 2.5);
+    margin-top: var(--luft);
+}
+
+@media (min-width: 54rem) {
+    .kontakt-container {
+        grid-template-columns: 1.05fr 1.2fr;
+        gap: calc(var(--luft) * 3);
+        align-items: start;
+    }
+}
+
+.kontakt-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.kontakt-info p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.kontakt-metoder {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.kontakt-metod-kort {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+    padding: 1.15rem 1.25rem;
+    background: var(--yta-2);
+    border: 1px solid var(--kant);
+    border-radius: var(--radie);
+    box-shadow: var(--skugga);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kontakt-metod-kort:hover {
+    transform: translateY(-2px);
+    border-color: var(--primar);
+    box-shadow: var(--skugga-hover);
+}
+
+.kontakt-metod-ikon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: var(--yta-accent);
+    border-radius: 12px;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.kontakt-metod-detalj {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.kontakt-metod-titel {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dampad);
+}
+
+.kontakt-epost-rad {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.kopiera-knapp {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
     font-weight: 600;
+    font-family: inherit;
+    color: var(--primar);
+    background: var(--yta-accent);
+    border: 1px solid var(--kant);
+    border-radius: var(--radie-knapp);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.kopiera-knapp:hover {
+    background: var(--primar);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Formulärets kort */
+.kontakt-formular-yta {
+    background: var(--yta-2);
+    padding: calc(var(--luft) * 1.75);
+    border-radius: var(--radie);
+    border: 1px solid var(--kant);
+    box-shadow: var(--skugga);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kontakt-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.kontakt-form h3 {
+    font-size: 1.35rem;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    color: var(--primar);
+}
+
+.form-grupp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-grupp label {
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.obligatorisk {
+    color: #ef4444;
+}
+
+.form-grupp input,
+.form-grupp textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-huvud);
+    font-size: 0.975rem;
+    color: var(--text);
+    background-color: var(--yta);
+    border: 1px solid var(--kant);
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-grupp input::placeholder,
+.form-grupp textarea::placeholder {
+    color: var(--text-dampad);
+    opacity: 0.75;
+}
+
+.form-grupp input:focus,
+.form-grupp textarea:focus {
+    outline: none;
+    border-color: var(--primar);
+    background-color: var(--yta-2);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+body.morkt .form-grupp input:focus,
+body.morkt .form-grupp textarea:focus {
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+}
+
+.form-grupp textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.kontakt-skicka-knapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    align-self: flex-start;
+    padding: 0.85rem 1.85rem;
+}
+
+.kontakt-skicka-knapp .skicka-pil {
+    font-size: 1.15rem;
+    transition: transform 0.2s ease;
+}
+
+.kontakt-skicka-knapp:hover .skicka-pil {
+    transform: translateX(4px);
+}
+
+/* Status- och bekräftelsemeddelande */
+.formular-status {
+    display: none;
+    font-size: 0.9375rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.formular-status.succé {
+    display: block;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.formular-status.fel {
+    display: block;
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+body.morkt .formular-status.succé {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+body.morkt .formular-status.fel {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.35);
 }
 
 /* ==========================================================================
@@ -373,16 +752,37 @@ footer p {
 /* ==========================================================================
    8 · Större skärmar (Responsiv layout för surfplattor och datorer)
    ========================================================================== */
-@media (min-width: 48rem) {
+@media (min-width: 52rem) {
     .sidhuvud {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--luft) calc(var(--luft) * 2);
+        padding: 1.1rem calc(var(--luft) * 2);
     }
 
-    .tema-knapp {
-        align-self: center;
+    .sidhuvud-container {
+        flex-wrap: nowrap;
+        gap: 2rem;
+    }
+
+    .sidhuvud-branding {
+        flex: 0 0 auto;
+    }
+
+    .sidhuvud-branding h1 {
+        font-size: 1.45rem;
+    }
+
+    .sidhuvud-nav {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .sidhuvud-actions {
+        flex: 0 0 auto;
+    }
+
+    /* Kontakt visas som primär CTA till höger, döljs i mittlänkarna på större skärmar */
+    .nav-lank-kontakt {
+        display: none;
     }
 
     h1 {
@@ -408,6 +808,65 @@ footer p {
     .om-bild {
         max-width: 240px;
         flex-shrink: 0;
+    }
+}
+
+/* Mobil- och surfplatteanpassning för sidhuvudet */
+@media (max-width: 51.99rem) {
+    .sidhuvud-container {
+        flex-wrap: wrap;
+        row-gap: 0.85rem;
+    }
+
+    .sidhuvud-branding {
+        flex: 1 1 auto;
+    }
+
+    .sidhuvud-branding h1 {
+        font-size: 1.25rem;
+    }
+
+    .sidhuvud-actions {
+        flex: 0 0 auto;
+    }
+
+    .sidhuvud-nav {
+        width: 100%;
+        order: 3;
+        padding-top: 0.65rem;
+        border-top: 1px solid var(--kant);
+    }
+
+    .nav-lankar {
+        justify-content: center;
+        gap: 0.5rem 1.15rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-lank-kontakt {
+        display: list-item;
+    }
+}
+
+@media (max-width: 32rem) {
+    .sidhuvud-branding {
+        width: 100%;
+        text-align: center;
+    }
+
+    .sidhuvud-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .sidhuvud-cta {
+        padding: 0.35rem 0.4rem 0.35rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .sidhuvud-cta-ikon {
+        width: 28px;
+        height: 28px;
     }
 }
 

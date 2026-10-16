@@ -49,9 +49,13 @@ function kopieraMail() {
     navigator.clipboard.writeText("Nico.cousinne@gmail.com");
     if (kopiera) {
         kopiera.textContent = "Kopierat!";
+        setTimeout(() => {
+            kopiera.textContent = "Kopiera";
+        }, 2500);
     }
 }
 
 if (kopiera) {
     kopiera.addEventListener("click", kopieraMail);
 }
+

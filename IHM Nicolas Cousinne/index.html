@@ -15,22 +15,34 @@
 
 <body>
     <header class="sidhuvud">
-        <div class="sidhuvud-branding">
-            <h1>Nicolas Cousinne</h1>
-            <p class="roll">Digital Marketing Specialist student i Göteborg</p>
+        <div class="sidhuvud-container">
+            <div class="sidhuvud-branding">
+                <h1>Nicolas Cousinne</h1>
+                <p class="roll">Digital Marketing Specialist student i Göteborg</p>
+            </div>
+            <nav aria-label="Huvudmeny" class="sidhuvud-nav">
+                <ul class="nav-lankar">
+                    <li><a href="#om">Om mig</a></li>
+                    <li><a href="#tjanster">Vad jag gör</a></li>
+                    <li><a href="#kompetenser">Kompetenser</a></li>
+                    <li><a href="#projekt">Projekt</a></li>
+                    <li class="nav-lank-kontakt"><a href="#kontakt">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="sidhuvud-actions">
+                <button id="tema" class="tema-knapp" type="button" aria-label="Växla till mörkt läge">
+                    🌙 Mörkt läge
+                </button>
+                <a href="#kontakt" class="sidhuvud-cta">
+                    <span>Kontakt</span>
+                    <span class="sidhuvud-cta-ikon" aria-hidden="true">
+                        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </a>
+            </div>
         </div>
-        <nav aria-label="Huvudmeny">
-            <ul>
-                <li><a href="#om">Om mig</a></li>
-                <li><a href="#tjanster">Vad jag gör</a></li>
-                <li><a href="#kompetenser">Kompetenser</a></li>
-                <li><a href="#projekt">Projekt</a></li>
-                <li><a href="#kontakt">Kontakt</a></li>
-            </ul>
-        </nav>
-        <button id="tema" class="tema-knapp" type="button" aria-label="Växla till mörkt läge">
-            🌙 Mörkt läge
-        </button>
     </header>
 
     <main>
@@ -102,11 +114,41 @@
         </section>
 
         <section id="kontakt">
-            <h2>Kontakt</h2>
-            <p>Vill du veta mer? Mejla mig eller hör av dig på LinkedIn.</p>
-            <p><a href="mailto:Nico.cousinne@gmail.com">Nico.cousinne@gmail.com</a></p>
-            <p><a href="https://www.linkedin.com/in/nicolas-cousinne-8398451b2/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BxeozzIzlSh2UUmeXI5rTnw%3D%3D"
-                    target="_blank" rel="noopener">Nicolas Cousinne på LinkedIn</a></p>
+            <div class="kontakt-container">
+                <div class="kontakt-info">
+                    <h2>Kontakt</h2>
+                    <p>Vill du diskutera LIA-praktik, potentiella samarbeten eller digital marknadsföring? Skicka ett meddelande i formuläret, mejla direkt eller anslut på LinkedIn.</p>
+                    
+                    <div class="kontakt-metoder">
+                        <div class="kontakt-metod-kort">
+                            <span class="kontakt-metod-ikon" aria-hidden="true">✉️</span>
+                            <div class="kontakt-metod-detalj">
+                                <span class="kontakt-metod-titel">E-post</span>
+                                <div class="kontakt-epost-rad">
+                                    <a href="mailto:Nico.cousinne@gmail.com">Nico.cousinne@gmail.com</a>
+                                    <button id="kopiera" type="button" class="kopiera-knapp" aria-label="Kopiera e-postadress">Kopiera</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kontakt-metod-kort">
+                            <span class="kontakt-metod-ikon" aria-hidden="true">💼</span>
+                            <div class="kontakt-metod-detalj">
+                                <span class="kontakt-metod-titel">LinkedIn</span>
+                                <div>
+                                    <a href="https://www.linkedin.com/in/nicolas-cousinne-8398451b2/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BxeozzIzlSh2UUmeXI5rTnw%3D%3D"
+                                        target="_blank" rel="noopener">Nicolas Cousinne på LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kontakt-formular-yta">
+                    <h3>Skicka ett meddelande</h3>
+                    <div id="hubspot-kontaktformular"></div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -114,6 +156,15 @@
         <p>© 2026 Nicolas Cousinne · Byggd för hand med HTML, CSS och JavaScript</p>
     </footer>
 
+    <script src="https://js-eu1.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
+    <script>
+        hbspt.forms.create({
+            region: "eu1",
+            portalId: "149565901",
+            formId: "0b911bed-76be-4155-a358-f416e55a927c",
+            target: "#hubspot-kontaktformular"
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 
