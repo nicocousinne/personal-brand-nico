@@ -1,92 +1,70 @@
-// ==========================================================================
-// Temabyte: knappen med id="tema" som byter mellan ljust och mörkt läge
-// ==========================================================================
-const temaKnapp = document.querySelector("#tema");
+const themeButton = document.querySelector("#tema");
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+const emailAddress = "Nico.cousinne@gmail.com";
 
-function vaxlaTema() {
-    document.body.classList.toggle("morkt");
-    const arMorkt = document.body.classList.contains("morkt");
-    if (temaKnapp) {
-        temaKnapp.innerHTML = arMorkt ? "☀️ Ljust läge" : "🌙 Mörkt läge";
-        temaKnapp.setAttribute("aria-label", arMorkt ? "Växla till ljust läge" : "Växla till mörkt läge");
+function applyTheme(isDark) {
+    document.body.classList.toggle("morkt", isDark);
+    if (themeButton) {
+        themeButton.innerHTML = isDark ? '☀ <span>Ljust läge</span>' : '☾ <span>Mörkt läge</span>';
+        themeButton.setAttribute("aria-label", isDark ? "Växla till ljust läge" : "Växla till mörkt läge");
+        themeButton.setAttribute("aria-pressed", String(isDark));
     }
+    if (themeMeta) themeMeta.setAttribute("content", isDark ? "#111111" : "#faf8f4");
 }
 
-if (temaKnapp) {
-    temaKnapp.addEventListener("click", vaxlaTema);
+try {
+    applyTheme(localStorage.getItem("nicolas-theme") === "dark");
+} catch {
+    applyTheme(false);
 }
 
-// ==========================================================================
-// Funktioner för eventuella extra knappar (Visa mer och Kopiera mejl)
-// ==========================================================================
-const knapp = document.querySelector("#visa-mer");
-const mer = document.querySelector("#mer");
-
-if (mer) {
-    mer.classList.add("gomd");
+if (themeButton) {
+    themeButton.addEventListener("click", () => {
+        const isDark = !document.body.classList.contains("morkt");
+        applyTheme(isDark);
+        try { localStorage.setItem("nicolas-theme", isDark ? "dark" : "light"); } catch { /* Temat fungerar även utan lagring. */ }
+    });
 }
 
-function visaMer() {
-    if (mer && knapp) {
-        mer.classList.toggle("gomd");
-        if (mer.classList.contains("gomd")) {
-            knapp.textContent = "Visa mer";
-            knapp.setAttribute("aria-expanded", "false");
-        } else {
-            knapp.textContent = "Visa mindre";
-            knapp.setAttribute("aria-expanded", "true");
+const copyButton = document.querySelector("#kopiera");
+if (copyButton) {
+    copyButton.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(emailAddress);
+            copyButton.textContent = "Kopierat!";
+            copyButton.setAttribute("aria-label", "E-postadressen har kopierats");
+        } catch {
+            window.location.href = `mailto:${emailAddress}`;
+            copyButton.textContent = "Öppnar e-post";
         }
-    }
-}
-
-if (knapp) {
-    knapp.addEventListener("click", visaMer);
-}
-
-const kopiera = document.querySelector("#kopiera");
-
-function kopieraMail() {
-    navigator.clipboard.writeText("Nico.cousinne@gmail.com");
-    if (kopiera) {
-        kopiera.textContent = "Kopierat!";
-        setTimeout(() => {
-            kopiera.textContent = "Kopiera";
+        window.setTimeout(() => {
+            copyButton.textContent = "Kopiera";
+            copyButton.setAttribute("aria-label", "Kopiera e-postadress");
         }, 2500);
-    }
+    });
 }
 
-if (kopiera) {
-    kopiera.addEventListener("click", kopieraMail);
-}
-
-// Läsprogress högst upp på sidan.
-const progressFyllning = document.querySelector("#scroll-progress-fill");
-
-function uppdateraLasprogress() {
-    if (!progressFyllning) return;
+const progressFill = document.querySelector("#scroll-progress-fill");
+function updateReadingProgress() {
+    if (!progressFill) return;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-    progressFyllning.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+    progressFill.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
 }
+window.addEventListener("scroll", updateReadingProgress, { passive: true });
+window.addEventListener("resize", updateReadingProgress);
+updateReadingProgress();
 
-window.addEventListener("scroll", uppdateraLasprogress, { passive: true });
-window.addEventListener("resize", uppdateraLasprogress);
-uppdateraLasprogress();
-
-// Låt sektioner och kort tona in när de kommer in i vyn.
-if ("IntersectionObserver" in window) {
-    const elementerAttVisa = document.querySelectorAll("main section:not(.hero), .kort");
-    elementerAttVisa.forEach((element) => element.classList.add("reveal-on-scroll"));
-
-    const visningsObserver = new IntersectionObserver((poster) => {
-        poster.forEach((post) => {
-            if (post.isIntersecting) {
-                post.target.classList.add("is-visible");
-                visningsObserver.unobserve(post.target);
+if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const elements = document.querySelectorAll(".section, .project-card, .lia-section");
+    elements.forEach((element) => element.classList.add("reveal-on-scroll"));
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                currentObserver.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.12 });
-
-    elementerAttVisa.forEach((element) => visningsObserver.observe(element));
+    }, { threshold: 0.08 });
+    elements.forEach((element) => observer.observe(element));
 }
-
