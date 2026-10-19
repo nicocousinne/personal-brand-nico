@@ -45,14 +45,34 @@ if (copyButton) {
 }
 
 const progressFill = document.querySelector("#scroll-progress-fill");
+const ambientLayer = document.querySelector(".ambient-bg");
+const scrollOrb = document.querySelector(".scroll-orb");
 function updateReadingProgress() {
-    if (!progressFill) return;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-    progressFill.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+    const boundedProgress = Math.min(1, Math.max(0, progress));
+    if (progressFill) progressFill.style.transform = `scaleX(${boundedProgress})`;
+
+    if (ambientLayer && scrollOrb && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const orbSize = scrollOrb.offsetWidth;
+        const x = Math.max(12, Math.min(window.innerWidth - orbSize - 12, window.innerWidth * (0.73 - 0.5 * boundedProgress)));
+        const y = window.innerHeight * (0.07 + 0.58 * boundedProgress);
+        ambientLayer.style.setProperty("--scroll-orb-x", `${x}px`);
+        ambientLayer.style.setProperty("--scroll-orb-y", `${y}px`);
+        ambientLayer.style.setProperty("--scroll-orb-rotation", `${-18 + 72 * boundedProgress}deg`);
+    }
 }
-window.addEventListener("scroll", updateReadingProgress, { passive: true });
-window.addEventListener("resize", updateReadingProgress);
+let scrollUpdateQueued = false;
+function scheduleScrollUpdate() {
+    if (scrollUpdateQueued) return;
+    scrollUpdateQueued = true;
+    window.requestAnimationFrame(() => {
+        scrollUpdateQueued = false;
+        updateReadingProgress();
+    });
+}
+window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
+window.addEventListener("resize", scheduleScrollUpdate);
 updateReadingProgress();
 
 // Skifta bakgrundens färgton när besökaren rör sig mellan sidans sektioner.
