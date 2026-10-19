@@ -52,9 +52,9 @@ p { color:var(--muted); }
 .sidhuvud-cta:hover { color:white; background:var(--orange-dark); }
 
 main { overflow:hidden; }
-.hero { position:relative; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.75fr); align-items:center; gap:clamp(2rem,7vw,7rem); width:min(var(--max),calc(100% - 3rem)); min-height:660px; margin:2rem auto 0; padding:clamp(2.5rem,7vw,6rem); overflow:hidden; border-radius:28px; color:#fffaf5; background:linear-gradient(120deg,#e94b2e 0%,#f87535 49%,#8b2930 100%); box-shadow:0 26px 70px rgba(115,44,31,.19); }
+.hero { position:relative; display:block; width:min(var(--max),calc(100% - 3rem)); min-height:660px; margin:2rem auto 0; padding:clamp(2.5rem,7vw,6rem); overflow:hidden; border-radius:28px; color:#fffaf5; background:linear-gradient(120deg,#e94b2e 0%,#f87535 49%,#8b2930 100%); box-shadow:0 26px 70px rgba(115,44,31,.19); }
 .hero::before { position:absolute; width:440px; height:440px; right:12%; bottom:-52%; border:1px solid rgba(255,255,255,.2); border-radius:50%; content:""; }
-.hero-copy { position:relative; z-index:2; max-width:650px; }
+.hero-copy { position:relative; z-index:2; width:60%; max-width:650px; }
 .eyebrow { margin:0 0 .9rem; color:var(--orange-dark); font-size:.72rem; font-weight:800; letter-spacing:.13em; line-height:1.5; text-transform:uppercase; }
 .hero .eyebrow { display:flex; align-items:center; gap:.6rem; color:rgba(255,250,245,.9); }
 .status-dot { width:8px; height:8px; border-radius:50%; background:#d3f099; box-shadow:0 0 0 4px rgba(211,240,153,.17); }
@@ -68,9 +68,9 @@ main { overflow:hidden; }
 .textlank:hover { color:#ffe0cb; }
 .hero-meta { display:flex; flex-wrap:wrap; gap:1.35rem; margin-top:3rem; color:rgba(255,250,245,.78); font-size:.71rem; font-weight:600; }
 .hero-meta span+span::before { display:inline-block; width:4px; height:4px; margin:0 .8rem .16rem 0; border-radius:50%; background:#ffc07f; content:""; }
-.hero-portratt { position:relative; z-index:1; justify-self:end; width:min(100%,330px); margin:0; }
-.hero-portratt img { width:100%; height:clamp(380px,43vw,495px); object-fit:cover; object-position:center 36%; border:7px solid rgba(255,250,245,.92); border-radius:48% 48% 22px 22px; box-shadow:0 22px 48px rgba(53,24,24,.3); }
-.hero-portratt figcaption { position:absolute; right:-25px; bottom:25px; display:flex; align-items:center; gap:.7rem; padding:.75rem 1rem .75rem .75rem; border:1px solid rgba(255,255,255,.35); border-radius:14px; color:#fff; background:rgba(49,28,27,.62); backdrop-filter:blur(12px); font-size:.72rem; font-weight:700; line-height:1.4; }
+.hero-portratt { position:absolute; z-index:1; inset:0 0 0 auto; width:38%; margin:0; overflow:hidden; }
+.hero-portratt img { width:100%; height:100%; object-fit:cover; object-position:center 31%; border:0; border-radius:0; box-shadow:none; }
+.hero-portratt figcaption { position:absolute; right:1rem; bottom:1.25rem; display:flex; align-items:center; gap:.7rem; padding:.75rem 1rem .75rem .75rem; border:1px solid rgba(255,255,255,.35); border-radius:14px; color:#fff; background:rgba(49,28,27,.62); backdrop-filter:blur(12px); font-size:.72rem; font-weight:700; line-height:1.4; }
 .hero-portratt figcaption small { color:rgba(255,255,255,.73); font-size:.65rem; font-weight:500; }
 .portrait-mark { display:grid; width:36px; height:36px; place-items:center; border-radius:50%; color:#33221c; background:#ffd09a; font-size:.65rem; }
 .hero-ornament { position:absolute; right:4%; top:4%; color:rgba(255,255,255,.11); font-size:clamp(3rem,8vw,7rem); font-weight:800; letter-spacing:-.1em; }
@@ -166,8 +166,8 @@ footer a { font-weight:700; text-decoration:none; }
     .nav-lankar a { font-size:.75rem; }
     .sidhuvud-cta { display:none; }
     .hero { width:calc(100% - 2rem); min-height:570px; padding:clamp(2rem,5vw,3.5rem); gap:2rem; }
-    .hero-portratt { width:min(100%,280px); }
-    .hero-portratt img { height:400px; }
+    .hero-copy { width:60%; }
+    .hero-portratt { width:38%; }
     .section,.lia-section,footer { width:calc(100% - 2rem); }
 }
 @media (max-width:680px) {
@@ -181,11 +181,12 @@ footer a { font-weight:700; text-decoration:none; }
     .sidhuvud-nav::-webkit-scrollbar { display:none; }
     .nav-lankar { justify-content:space-between; min-width:360px; padding:.1rem 0 .2rem; }
     .nav-lankar a { font-size:.72rem; }
-    .hero { grid-template-columns:1fr; gap:2rem; min-height:0; margin-top:1rem; padding:2.3rem 1.5rem 1.5rem; border-radius:22px; }
+    .hero { min-height:0; margin-top:1rem; padding:2.3rem 1.5rem 1.5rem; border-radius:22px; }
+    .hero-copy { width:100%; }
     .hero h1 { max-width:13ch; font-size:clamp(2.7rem,12vw,4.3rem); }
     .hero-meta { margin-top:1.8rem; }
-    .hero-portratt { justify-self:center; width:min(82%,280px); }
-    .hero-portratt img { height:clamp(340px,105vw,410px); }
+    .hero-portratt { position:relative; inset:auto; z-index:1; width:min(82%,280px); margin:2rem auto 0; overflow:visible; }
+    .hero-portratt img { width:100%; height:clamp(340px,105vw,410px); border:7px solid rgba(255,250,245,.92); border-radius:48% 48% 22px 22px; box-shadow:0 22px 48px rgba(53,24,24,.3); }
     .hero-portratt figcaption { right:-13px; bottom:20px; }
     .hero-ornament { top:auto; right:5%; bottom:32%; font-size:3.5rem; }
     .section { padding:4.5rem 0; }
