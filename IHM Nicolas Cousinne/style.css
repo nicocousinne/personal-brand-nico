@@ -906,3 +906,257 @@ body.morkt {
     --skugga: 0 4px 20px -2px rgba(0, 0, 0, 0.5); /* Djupare skuggor i mörkt läge */
     --skugga-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.7);
 }
+
+/* ==========================================================================
+   10 · Kreativ portfolioidentitet
+   Visuell omarbetning ovanpå befintliga komponenter; funktioner och markup
+   lämnas intakta.
+   ========================================================================== */
+:root {
+    --text: #20211f;
+    --text-dampad: #555650;
+    --yta: #f7f4ec;
+    --yta-2: #fffdf7;
+    --yta-accent: #f3e4d1;
+    --primar: #59335f;
+    --primar-hover: #75477b;
+    --accent: #d85d37;
+    --accent-hover: #b94425;
+    --accent-text: #fffaf3;
+    --badge-bg: #e7d8e9;
+    --badge-text: #4f2c55;
+    --kant: #ded8ca;
+    --fokus: #d85d37;
+    --skugga: 0 16px 45px rgba(54, 39, 34, .09);
+    --skugga-hover: 0 24px 55px rgba(54, 39, 34, .16);
+    --radie: 24px;
+}
+
+body {
+    background-image: radial-gradient(rgba(89, 51, 95, .10) .8px, transparent .8px);
+    background-size: 22px 22px;
+}
+
+h1, h2, h3 { color: var(--primar); }
+
+.sidhuvud {
+    background-color: rgba(247, 244, 236, .9);
+    border-bottom: 1px solid rgba(89, 51, 95, .15);
+    box-shadow: 0 5px 24px rgba(54, 39, 34, .05);
+}
+
+.sidhuvud-branding h1 { color: var(--primar); }
+.nav-lankar a:hover { color: var(--accent); }
+.nav-lankar a::after { background: var(--accent); }
+
+.tema-knapp {
+    background: var(--yta-2);
+    border-color: var(--kant);
+}
+
+.sidhuvud-cta, .knapp {
+    background: var(--accent);
+    box-shadow: 0 9px 22px rgba(216, 93, 55, .23);
+}
+
+.sidhuvud-cta:hover, .knapp:hover { background: var(--accent-hover); }
+.sidhuvud-cta-ikon { color: var(--accent); }
+
+main { max-width: 74rem; }
+
+section {
+    padding: clamp(3rem, 7vw, 6rem) 0;
+    border-bottom: 1px solid rgba(89, 51, 95, .16);
+}
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(690px, calc(100vh - 90px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 6vw, 5.5rem);
+    margin: 2rem 0 1rem;
+    overflow: hidden;
+    border: 0;
+    border-radius: 36px;
+    background: linear-gradient(125deg, #f0e5ee 0%, #f7e9d9 52%, #f3d9c8 100%);
+    box-shadow: var(--skugga);
+}
+
+.hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.hero::before {
+    width: min(38vw, 440px);
+    aspect-ratio: 1;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%) rotate(-12deg);
+    border-radius: 48% 52% 58% 42% / 43% 41% 59% 57%;
+    background: linear-gradient(145deg, #643b69, #38263e);
+    box-shadow: 22px 24px 0 rgba(216, 93, 55, .78);
+}
+
+.hero::after {
+    width: min(24vw, 260px);
+    aspect-ratio: 1;
+    right: 10%;
+    top: 20%;
+    border: 2px solid rgba(255, 253, 247, .55);
+    border-radius: 50%;
+}
+
+.hero-badge {
+    color: var(--badge-text);
+    background: rgba(255, 253, 247, .75);
+    border: 1px solid rgba(89, 51, 95, .12);
+    letter-spacing: .09em;
+}
+
+.hero h2 {
+    max-width: 14ch;
+    font-size: clamp(2.8rem, 6.3vw, 5.6rem);
+    line-height: .99;
+    letter-spacing: -.065em;
+    color: #332638;
+    margin: .35rem 0 1.25rem;
+}
+
+.hero p {
+    max-width: 43ch;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: #51464f;
+    margin-bottom: 1.7rem;
+}
+
+.knapp { padding: .95rem 1.8rem; }
+
+section > h2, .kontakt-info h2 {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -.05em;
+}
+
+#om .om-innehall {
+    padding: clamp(1.25rem, 4vw, 3rem);
+    background: var(--yta-2);
+    border: 1px solid var(--kant);
+    border-radius: 30px;
+    box-shadow: var(--skugga);
+}
+
+.om-bild {
+    max-width: 290px;
+    border: 7px solid #f0e5ee;
+    border-radius: 46% 46% 22px 22px;
+    box-shadow: 14px 14px 0 #e9c7b8;
+}
+
+.om-text p { font-size: clamp(1.05rem, 1.7vw, 1.25rem); }
+
+.rutnat { gap: 1.25rem; }
+
+#tjanster .kort, #projekt .kort {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.35rem, 2.6vw, 2rem);
+    background: var(--yta-2);
+    border: 1px solid var(--kant);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(54, 39, 34, .06);
+}
+
+#tjanster .kort:nth-child(3n + 1) { border-top: 5px solid #d85d37; }
+#tjanster .kort:nth-child(3n + 2) { border-top: 5px solid #6d9279; }
+#tjanster .kort:nth-child(3n) { border-top: 5px solid #79577e; }
+.kort-ikon { border-radius: 16px; background: #f5e6d7; }
+#tjanster .kort:nth-child(3n + 2) .kort-ikon { background: #e2ece3; }
+#tjanster .kort:nth-child(3n) .kort-ikon { background: #eee4ef; }
+
+#projekt .kort img {
+    aspect-ratio: 16 / 11;
+    border: 0;
+    border-radius: 17px;
+}
+
+.kontakt-container {
+    padding: clamp(1.25rem, 4vw, 3rem);
+    border-radius: 30px;
+    background: #eee5ef;
+}
+
+.kontakt-metod-kort, .kontakt-formular-yta {
+    background: var(--yta-2);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(54, 39, 34, .07);
+}
+
+.kontakt-metod-ikon { background: #f5e6d7; }
+.kopiera-knapp { color: var(--primar); background: #eee4ef; }
+.kopiera-knapp:hover { background: var(--primar); }
+
+footer {
+    background: #332638;
+    border: 0;
+    padding: 2.5rem 1rem;
+}
+
+footer p { color: #f7f0e8; }
+
+body.morkt {
+    --text: #f5eee8;
+    --text-dampad: #d1c5d2;
+    --yta: #17131a;
+    --yta-2: #241d28;
+    --yta-accent: #382b3b;
+    --primar: #d3a8d8;
+    --primar-hover: #e4c4e7;
+    --accent: #f08a63;
+    --accent-hover: #ff9e78;
+    --accent-text: #251720;
+    --badge-bg: #382b3b;
+    --badge-text: #e4c4e7;
+    --kant: #443747;
+    --fokus: #ffad89;
+    --skugga: 0 16px 45px rgba(0, 0, 0, .28);
+    --skugga-hover: 0 24px 55px rgba(0, 0, 0, .42);
+    background-image: radial-gradient(rgba(228, 196, 231, .08) .8px, transparent .8px);
+}
+
+body.morkt .sidhuvud { background-color: rgba(23, 19, 26, .9); }
+body.morkt .hero { background: linear-gradient(125deg, #332638, #392a39 56%, #4a302c); }
+body.morkt .hero::before { background: linear-gradient(145deg, #d488db, #754d7d); box-shadow: 22px 24px 0 rgba(240, 138, 99, .65); }
+body.morkt .hero h2 { color: #fff4ec; }
+body.morkt .hero p { color: #e1d5dc; }
+body.morkt .hero-badge { color: #f2d8f4; background: rgba(36, 29, 40, .8); border-color: #59465c; }
+body.morkt #om .om-innehall { background: var(--yta-2); }
+body.morkt .om-bild { border-color: #382b3b; box-shadow: 14px 14px 0 #754d54; }
+body.morkt #tjanster .kort:nth-child(3n + 1) { border-top-color: #f08a63; }
+body.morkt #tjanster .kort:nth-child(3n + 2) { border-top-color: #8bb99a; }
+body.morkt #tjanster .kort:nth-child(3n) { border-top-color: #bc91c5; }
+body.morkt .kort-ikon, body.morkt #tjanster .kort:nth-child(n) .kort-ikon,
+body.morkt .kontakt-metod-ikon, body.morkt .kopiera-knapp { background: var(--yta-accent); }
+body.morkt .kontakt-container { background: #241d28; }
+body.morkt footer { background: #100d12; }
+body.morkt .sidhuvud-cta-ikon { background: #241d28; color: var(--accent); }
+
+@media (max-width: 52rem) {
+    .hero { min-height: 0; padding: 4rem 1.75rem; margin-top: 1.25rem; }
+    .hero::before { width: 190px; right: -22px; top: auto; bottom: 8px; transform: rotate(-12deg); opacity: .23; }
+    .hero::after { display: none; }
+    .hero h2 { max-width: 13ch; font-size: clamp(2.7rem, 11vw, 4.5rem); }
+    .hero p { max-width: 34ch; }
+    .kontakt-container { gap: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+}
