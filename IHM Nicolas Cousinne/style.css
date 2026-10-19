@@ -80,14 +80,10 @@ main { overflow:hidden; }
 .section-heading .eyebrow { margin-bottom:.55rem; }
 .section-heading-wide { display:flex; align-items:end; justify-content:space-between; gap:2rem; }
 .section-intro { max-width:42ch; margin:0 0 .25rem; font-size:.95rem; }
-.om-innehall { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr); align-items:start; gap:clamp(2rem,8vw,7rem); padding-top:2rem; border-top:1px solid var(--line); }
-.om-copy { max-width:680px; }
+.om-innehall { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; padding-top:2rem; border-top:1px solid var(--line); }
+.om-copy { max-width:820px; }
 .lead { color:var(--text); font-size:clamp(1.2rem,2.4vw,1.75rem); font-weight:600; line-height:1.5; letter-spacing:-.035em; }
 .om-copy p:not(.lead) { max-width:66ch; }
-.about-note { padding:1.4rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
-.about-note p { margin:0; font-size:.87rem; }
-.about-note strong { color:var(--text); }
-.note-symbol { display:grid; width:36px; height:36px; margin-bottom:.9rem; place-items:center; border-radius:50%; color:var(--orange-dark); background:var(--orange-pale); font-weight:800; }
 
 .section-education { padding-top:4rem; }
 .education-card { position:relative; padding:clamp(1.5rem,4vw,2.5rem); border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); }
