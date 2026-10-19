@@ -1354,3 +1354,170 @@ body.morkt .sidhuvud-cta-ikon { background: #111e25; color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
     .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
 }
+
+/* Hero inspired by the supplied reference: warm gradient, dark frame, clear hierarchy. */
+:root {
+    --text: #201d1b;
+    --text-dampad: #5b5652;
+    --yta: #f4f0e9;
+    --yta-2: #fffaf5;
+    --yta-accent: #f6e1d6;
+    --primar: #292320;
+    --primar-hover: #4d3831;
+    --accent: #ef5a35;
+    --accent-hover: #d94927;
+    --accent-text: #fffaf5;
+    --badge-bg: rgba(255, 250, 245, .18);
+    --badge-text: #fffaf5;
+    --kant: #e2d9d0;
+    --fokus: #f05b36;
+    --skugga: 0 18px 48px rgba(41, 28, 22, .1);
+    --skugga-hover: 0 24px 54px rgba(41, 28, 22, .18);
+}
+
+body {
+    color: var(--text);
+    background-color: var(--yta);
+    background-image: radial-gradient(rgba(41, 35, 32, .08) .8px, transparent .8px);
+    background-size: 23px 23px;
+}
+
+h1, h2, h3 { color: var(--primar); }
+.sidhuvud { background-color: rgba(244, 240, 233, .94); }
+.sidhuvud-cta, .knapp { background: var(--accent); color: var(--accent-text); }
+.sidhuvud-cta:hover, .knapp:hover { background: var(--accent-hover); color: var(--accent-text); }
+.sidhuvud-cta-ikon { color: var(--accent); }
+
+.hero {
+    grid-template-columns: minmax(0, 1.08fr) minmax(260px, .82fr);
+    gap: clamp(2rem, 5vw, 4.75rem);
+    min-height: 590px;
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.75rem, 5vw, 4.75rem);
+    border-radius: 30px;
+    background: linear-gradient(122deg, #f04c2d 0%, #ff762b 46%, #7b2028 100%);
+    box-shadow: 0 24px 60px rgba(103, 39, 27, .2);
+}
+
+.hero::before {
+    width: min(34vw, 390px);
+    right: 5%;
+    border-radius: 46% 54% 48% 52% / 55% 42% 58% 45%;
+    background: linear-gradient(145deg, #7d2028, #431b24);
+    box-shadow: 18px 18px 0 rgba(255, 178, 74, .55);
+}
+
+.hero::after {
+    width: min(25vw, 280px);
+    right: 8%;
+    top: 12%;
+    border-color: rgba(255, 247, 235, .35);
+}
+
+.hero-badge {
+    color: #fffaf5;
+    background: rgba(32, 21, 19, .2);
+    border-color: rgba(255, 250, 245, .28);
+    font-size: .74rem;
+    letter-spacing: .1em;
+}
+
+.hero h2 {
+    max-width: 17ch;
+    margin: .75rem 0 1.1rem;
+    color: #fffaf5;
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    line-height: 1.1;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+}
+
+.hero p {
+    max-width: 38ch;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 250, 245, .92);
+    font-size: clamp(1rem, 1.35vw, 1.12rem);
+    line-height: 1.72;
+}
+
+.hero .knapp {
+    padding: .8rem 1.35rem;
+    background: #fffaf5;
+    color: #30221e;
+    box-shadow: 0 8px 20px rgba(66, 23, 21, .18);
+}
+
+.hero .knapp:hover { background: #f9dfd0; }
+
+.hero-portratt {
+    width: min(100%, 360px);
+    min-height: 0;
+    justify-self: end;
+    align-items: center;
+}
+
+.hero-portratt img {
+    width: auto;
+    height: clamp(390px, 38vw, 500px);
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    border: 6px solid rgba(255, 250, 245, .92);
+    border-radius: 22px;
+    box-shadow: 0 20px 40px rgba(41, 20, 19, .26);
+}
+
+section { border-bottom-color: rgba(41, 35, 32, .14); }
+#om .om-innehall { border-radius: 22px; }
+.om-bild { border-color: #f3c6af; box-shadow: 12px 12px 0 #ef5a35; }
+.kontakt-container { background: #f0dfd5; }
+footer { background: #201d1b; }
+
+body.morkt {
+    --text: #f7f1eb;
+    --text-dampad: #d0c5bc;
+    --yta: #111112;
+    --yta-2: #1c1b1b;
+    --yta-accent: #342622;
+    --primar: #fff5ec;
+    --primar-hover: #ffd7c3;
+    --accent: #ff7047;
+    --accent-hover: #ff8b67;
+    --accent-text: #251a17;
+    --badge-bg: rgba(255, 250, 245, .18);
+    --badge-text: #fffaf5;
+    --kant: #383231;
+    --fokus: #ff9a78;
+    --skugga: 0 18px 48px rgba(0, 0, 0, .3);
+    --skugga-hover: 0 24px 54px rgba(0, 0, 0, .45);
+    background-image: radial-gradient(rgba(255, 250, 245, .06) .8px, transparent .8px);
+}
+
+body.morkt .sidhuvud { background-color: rgba(17, 17, 18, .94); }
+body.morkt .hero { background: linear-gradient(122deg, #f04c2d 0%, #ff762b 46%, #7b2028 100%); }
+body.morkt .hero::before { background: linear-gradient(145deg, #7d2028, #431b24); }
+body.morkt .hero h2 { color: #fffaf5; }
+body.morkt .hero p { color: rgba(255, 250, 245, .92); }
+body.morkt .hero-portratt img { border-color: rgba(255, 250, 245, .85); }
+body.morkt .kontakt-container { background: #2b211e; }
+body.morkt footer { background: #090909; }
+body.morkt .om-bild { border-color: #e3a48b; box-shadow: 12px 12px 0 #ef5a35; }
+body.morkt .sidhuvud-cta-ikon { background: #1c1b1b; color: var(--accent); }
+
+@media (max-width: 52rem) {
+    .hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+        min-height: 0;
+        padding: 3rem 1.5rem;
+    }
+
+    .hero h2 {
+        max-width: 19ch;
+        font-size: clamp(1.95rem, 8vw, 2.7rem);
+        line-height: 1.12;
+    }
+
+    .hero p { max-width: 40ch; font-size: 1rem; }
+    .hero-portratt { width: min(100%, 340px); justify-self: center; }
+    .hero-portratt img { height: clamp(360px, 92vw, 460px); }
+}
