@@ -1522,36 +1522,35 @@ body.morkt .sidhuvud-cta-ikon { background: #1c1b1b; color: var(--accent); }
     .hero-portratt img { height: clamp(360px, 92vw, 460px); }
 }
 
-/* Nästan svart, varm bas som låter den orange hero-ytan stå ut. */
+/* Ljus, varm bakgrund med kontrast mot den orange hero-sektionen. */
 :root {
-    --text: #f5efe9;
-    --text-dampad: #d0c5bc;
-    --yta: #171312;
-    --yta-2: #211c1a;
-    --yta-accent: #34231f;
-    --primar: #fff3e9;
-    --primar-hover: #ffcfb9;
+    --text: #201d1b;
+    --text-dampad: #5b5652;
+    --yta: #f4f0e9;
+    --yta-2: #fffaf5;
+    --yta-accent: #f6e1d6;
+    --primar: #292320;
+    --primar-hover: #4d3831;
     --accent: #ef5a35;
-    --accent-hover: #ff7753;
-    --accent-text: #fff9f4;
+    --accent-hover: #d94927;
+    --accent-text: #fffaf5;
     --badge-bg: rgba(255, 250, 245, .18);
     --badge-text: #fffaf5;
-    --kant: #3d302c;
-    --fokus: #ff9a78;
-    --skugga: 0 18px 48px rgba(0, 0, 0, .34);
-    --skugga-hover: 0 24px 54px rgba(0, 0, 0, .5);
+    --kant: #e2d9d0;
+    --fokus: #f05b36;
+    --skugga: 0 18px 48px rgba(41, 28, 22, .1);
+    --skugga-hover: 0 24px 54px rgba(41, 28, 22, .18);
 }
 
 body {
     background-color: var(--yta);
-    background-image: radial-gradient(rgba(255, 250, 245, .045) .8px, transparent .8px);
+    background-image: radial-gradient(rgba(41, 35, 32, .08) .8px, transparent .8px);
+    background-size: 23px 23px;
 }
 
-.sidhuvud { background-color: rgba(23, 19, 18, .96); }
-section { border-bottom-color: rgba(255, 250, 245, .12); }
-.kontakt-container { background: #211a18; }
-.kort-ikon, .kontakt-metod-ikon, .kopiera-knapp { background: #34231f; color: #ffd0bd; }
-.kopiera-knapp:hover { background: var(--accent); color: #fff9f4; }
+.sidhuvud { background-color: rgba(244, 240, 233, .94); }
+section { border-bottom-color: rgba(41, 35, 32, .14); }
+.kontakt-container { background: #f0dfd5; }
 
 body.morkt {
     --yta: #080808;
