@@ -1522,35 +1522,37 @@ body.morkt .sidhuvud-cta-ikon { background: #1c1b1b; color: var(--accent); }
     .hero-portratt img { height: clamp(360px, 92vw, 460px); }
 }
 
-/* Ljus, varm bakgrund med kontrast mot den orange hero-sektionen. */
+/* Ljus, varmvit bas som låter den orange hero-ytan stå ut. */
 :root {
     --text: #201d1b;
     --text-dampad: #5b5652;
-    --yta: #f4f0e9;
-    --yta-2: #fffaf5;
-    --yta-accent: #f6e1d6;
+    --yta: #faf8f4;
+    --yta-2: #fffdf9;
+    --yta-accent: #f8e9df;
     --primar: #292320;
     --primar-hover: #4d3831;
     --accent: #ef5a35;
     --accent-hover: #d94927;
     --accent-text: #fffaf5;
-    --badge-bg: rgba(255, 250, 245, .18);
-    --badge-text: #fffaf5;
-    --kant: #e2d9d0;
+    --badge-bg: #f8e9df;
+    --badge-text: #71351f;
+    --kant: #e4d9d0;
     --fokus: #f05b36;
     --skugga: 0 18px 48px rgba(41, 28, 22, .1);
     --skugga-hover: 0 24px 54px rgba(41, 28, 22, .18);
 }
 
 body {
+    color: var(--text);
     background-color: var(--yta);
-    background-image: radial-gradient(rgba(41, 35, 32, .08) .8px, transparent .8px);
-    background-size: 23px 23px;
+    background-image: radial-gradient(rgba(71, 43, 33, .06) .8px, transparent .8px);
 }
 
-.sidhuvud { background-color: rgba(244, 240, 233, .94); }
+.sidhuvud { background-color: rgba(250, 248, 244, .94); }
 section { border-bottom-color: rgba(41, 35, 32, .14); }
-.kontakt-container { background: #f0dfd5; }
+.kontakt-container { background: #f8ede5; }
+.kort-ikon, .kontakt-metod-ikon, .kopiera-knapp { background: #f8e9df; color: #292320; }
+.kopiera-knapp:hover { background: var(--accent); color: #fffaf5; }
 
 body.morkt {
     --yta: #080808;
@@ -1562,20 +1564,3 @@ body.morkt {
 
 body.morkt .sidhuvud { background-color: rgba(8, 8, 8, .97); }
 body.morkt .kontakt-container { background: #181312; }
-
-
-/* Vit text i det inbäddade kontaktformuläret. */
-#hubspot-kontaktformular .hs-form label,
-#hubspot-kontaktformular .hs-form p,
-#hubspot-kontaktformular .hs-form legend,
-#hubspot-kontaktformular .hs-form .hs-richtext,
-#hubspot-kontaktformular .hs-form .hs-main-font-element,
-#hubspot-kontaktformular .hs-form .hs-form-required {
-    color: #fff !important;
-}
-
-#hubspot-kontaktformular .hs-form input:not([type="submit"]),
-#hubspot-kontaktformular .hs-form textarea,
-#hubspot-kontaktformular .hs-form select {
-    color: #fff !important;
-}
