@@ -1372,6 +1372,7 @@ body.morkt .hero-sticker { background: #e77b62; }
 body.morkt .kontakt-container { background: #1b3037; }
 body.morkt footer { background: #0b151a; }
 body.morkt .om-bild { border-color: #c7ec78; box-shadow: 14px 14px 0 #a84d43; }
+body.morkt .sidhuvud-cta-ikon { background: #111e25; color: var(--accent); }
 
 @media (max-width: 52rem) {
     .hero-portratt { min-height: 0; width: 100%; }
