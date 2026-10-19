@@ -1,1566 +1,222 @@
-/* ==========================================================================
-   1 · Box-modellen: bredden gäller hela lådan (inklusive padding och border)
-   ========================================================================== */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-/* ==========================================================================
-   2 · Varumärket som variabler (Färger, typografi och mått för ljust läge)
-   ========================================================================== */
 :root {
-    /* Färger – Ljust läge (Alla färger uppfyller WCAG AA med minst 4,5:1 kontrast) */
-    --text: #0f172a;               /* Djup skifferblå för rubriker och skarp brödtext (kontrast > 15:1) */
-    --text-dampad: #475569;        /* Mjukare sekundärtext för beskrivningar (kontrast 5,9:1) */
-    --yta: #f8fafc;                /* Bakgrund: mjuk, modern off-white */
-    --yta-2: #ffffff;              /* Bakgrund för kort, sidhuvud och vitriner */
-    --yta-accent: #eff6ff;         /* Ljusblå bakgrund för ikoner och badges */
-    --primar: #1e40af;             /* Djup marinblå: signalerar trovärdighet och expertis */
-    --primar-hover: #1d4ed8;       /* Något ljusare blå vid muspekare */
-    --accent: #1e40af;             /* Accentfärg för primära knappar */
-    --accent-hover: #1d4ed8;       /* Hover-färg för knappar */
-    --accent-text: #ffffff;        /* Vit text på accentknapp (kontrast 8,4:1) */
-    --badge-bg: #e0e7ff;           /* Bakgrund för utbildnings-badge */
-    --badge-text: #3730a3;         /* Textfärg för badge (kontrast 7,5:1) */
-    --kant: #e2e8f0;               /* Diskret linjefärg för ramar och avgränsare */
-    --fokus: #2563eb;              /* Tydlig fokusram för tangentbordsnavigering */
-    --skugga: 0 4px 20px -2px rgba(15, 23, 42, 0.08); /* Mjuk skugga för djup */
-    --skugga-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.14); /* Skugga när muspekaren hålls över */
-
-    /* Typografi och avstånd */
-    --font-huvud: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-    --luft: 1rem;                  /* Grundmått för avstånd och marginaler */
-    --radie: 16px;                 /* Rundning på kort och bilder */
-    --radie-knapp: 9999px;         /* Helt rundade hörn på knappar */
-}
-
-/* ==========================================================================
-   3 · Grundstil (Mobil-först: typsnitt, textflöde och responsiva bilder)
-   ========================================================================== */
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    font-family: var(--font-huvud);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    color: var(--text);
-    background-color: var(--yta);
-    overflow-x: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-h1,
-h2,
-h3 {
-    font-family: var(--font-huvud);
-    color: var(--primar);
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-    margin-top: 0;
-}
-
-h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.25rem;
-}
-
-h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-p {
-    max-width: 65ch;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--text-dampad);
-}
-
-a {
-    color: var(--primar);
-    text-underline-offset: 3px;
-    transition: color 0.2s ease;
-}
-
-a:hover {
-    color: var(--primar-hover);
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    border-radius: var(--radie);
-}
-
-/* ==========================================================================
-   4 · Sidhuvud och meny (Modern layout med luft, transparens & kapsel-CTA)
-   ========================================================================== */
-.sidhuvud {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: rgba(248, 250, 252, 0.85);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid var(--kant);
-    padding: 0.875rem var(--luft);
-    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-body.morkt .sidhuvud {
-    background-color: rgba(9, 13, 22, 0.85);
-    border-bottom-color: var(--kant);
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
-}
-
-.sidhuvud-container {
-    max-width: 76rem;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--luft);
-}
-
-/* 4.1 · Logotyp och branding till vänster */
-.sidhuvud-branding {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    flex-shrink: 0;
-}
-
-.sidhuvud-branding h1 {
-    font-size: 1.35rem;
-    line-height: 1.2;
-    margin: 0;
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    color: var(--primar);
-    transition: color 0.3s ease;
-}
-
-.sidhuvud-branding .roll {
-    margin: 0;
-    font-size: 0.825rem;
-    font-weight: 500;
-    color: var(--text-dampad);
-    line-height: 1.3;
-}
-
-/* 4.2 · Centrerade navigationslänkar */
-.sidhuvud-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-lankar {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 0.5rem 1.75rem;
-}
-
-.nav-lankar a {
-    font-weight: 600;
-    font-size: 0.9375rem;
-    text-decoration: none;
-    padding: 0.35rem 0.25rem;
-    color: var(--text-dampad);
-    position: relative;
-    transition: color 0.2s ease;
-}
-
-.nav-lankar a:hover {
-    color: var(--primar);
-}
-
-/* Subtil understrykning som glider ut vid hovring */
-.nav-lankar a::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--primar);
-    border-radius: 9999px;
-    transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-lankar a:hover::after,
-.nav-lankar a:focus-visible::after {
-    width: 100%;
-    left: 0;
-}
-
-/* 4.3 · Högersektion med tema-knapp och kapselformad primär CTA */
-.sidhuvud-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
-}
-
-.tema-knapp {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.85rem;
-    background: var(--yta);
-    color: var(--text);
-    border: 1px solid var(--kant);
-    border-radius: var(--radie-knapp);
-    font-family: inherit;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
-}
-
-.tema-knapp:hover {
-    background: var(--yta-accent);
-    border-color: var(--primar);
-    transform: translateY(-1px);
-}
-
-/* Primär CTA-knapp (kapselformad pill-shape med cirkulär pil) */
-.sidhuvud-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.375rem 0.45rem 0.375rem 1.25rem;
-    background-color: var(--primar);
-    color: var(--accent-text);
-    font-size: 0.9375rem;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: var(--radie-knapp);
-    box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);
-    transition: background-color 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
-    white-space: nowrap;
-}
-
-.sidhuvud-cta:hover {
-    background-color: var(--primar-hover);
-    color: var(--accent-text);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30, 64, 175, 0.35);
-}
-
-.sidhuvud-cta:active {
-    transform: translateY(0);
-}
-
-/* Cirkulär ikon-yta för pilen */
-.sidhuvud-cta-ikon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    color: var(--primar);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease;
-    flex-shrink: 0;
-}
-
-.sidhuvud-cta:hover .sidhuvud-cta-ikon {
-    transform: translateX(3px);
-}
-
-.sidhuvud-cta-ikon svg {
-    display: block;
-    width: 14px;
-    height: 14px;
-}
-
-/* Mörkt läge för CTA-knapp och ikon */
-body.morkt .sidhuvud-cta {
-    background-color: var(--accent);
-    color: var(--accent-text);
-    box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35);
-}
-
-body.morkt .sidhuvud-cta:hover {
-    background-color: var(--accent-hover);
-    color: var(--accent-text);
-    box-shadow: 0 8px 26px rgba(59, 130, 246, 0.5);
-}
-
-body.morkt .sidhuvud-cta-ikon {
-    background-color: #090d16;
-    color: #ffffff;
-}
-
-/* Tillgänglighet för knappar */
-.sidhuvud-cta:focus-visible {
-    outline: 2px solid var(--fokus);
-    outline-offset: 3px;
-}
-
-/* ==========================================================================
-   5 · Innehållsytan (Huvudinnehåll, Hero-sektion och Om mig)
-   ========================================================================== */
-main {
-    max-width: 68rem;
-    margin: 0 auto;
-    padding: 0 var(--luft);
-}
-
-section {
-    padding: calc(var(--luft) * 2.5) 0;
-    border-bottom: 1px solid var(--kant);
-}
-
-/* Hero-sektionen längst upp */
-.hero {
-    padding: calc(var(--luft) * 3) 0;
-}
-
-.hero-badge {
-    display: inline-block;
-    padding: 0.35rem 0.85rem;
-    background: var(--badge-bg);
-    color: var(--badge-text);
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border-radius: var(--radie-knapp);
-    margin-bottom: 1rem;
-}
-
-.hero h2 {
-    font-size: 1.85rem;
-    line-height: 1.25;
-    max-width: 25ch;
-    color: var(--text);
-}
-
-.hero p {
-    font-size: 1.15rem;
-    line-height: 1.6;
-    margin-bottom: 1.75rem;
-}
-
-/* Huvudknappen (Call To Action) */
-.knapp {
-    display: inline-block;
-    padding: 0.85rem 1.75rem;
-    background: var(--accent);
-    color: var(--accent-text);
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    border-radius: var(--radie-knapp);
-    box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.knapp:hover {
-    background: var(--accent-hover);
-    color: var(--accent-text);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30, 64, 175, 0.35);
-}
-
-/* Om mig-sektionen */
-.om-innehall {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--luft) * 1.5);
-    margin-top: 1rem;
-}
-
-.om-bild {
-    width: 100%;
-    max-width: 280px;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    object-position: top center;
-    border-radius: calc(var(--radie) + 4px);
-    box-shadow: var(--skugga);
-    border: 3px solid var(--yta-2);
-}
-
-.om-text p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-}
-
-/* ==========================================================================
-   6 · Kort i ett rutnät (Tjänster och Projekt med svävande kort-effekt)
-   ========================================================================== */
-.rutnat {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: calc(var(--luft) * 1.5);
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0 0 0;
-}
-
-.kort {
-    background: var(--yta-2);
-    padding: calc(var(--luft) * 1.5);
-    border: 1px solid var(--kant);
-    border-radius: var(--radie);
-    box-shadow: var(--skugga);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.kort:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--skugga-hover);
-    border-color: var(--primar);
-}
-
-.kort-ikon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    background: var(--yta-accent);
-    border-radius: 12px;
-    font-size: 1.35rem;
-    margin-bottom: 1rem;
-}
-
-.kort h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: var(--text);
-}
-
-.kort p {
-    margin-bottom: 0;
-    font-size: 0.975rem;
-}
-
-/* Projektkort och deras bilder */
-.kort img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border-radius: calc(var(--radie) - 4px);
-    margin-bottom: var(--luft);
-    border: 1px solid var(--kant);
-}
-
-/* ==========================================================================
-   6 · Kontaktsektion och formulär
-   ========================================================================== */
-#kontakt {
-    border-bottom: none;
-    padding-bottom: calc(var(--luft) * 4);
-}
-
-.kontakt-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: calc(var(--luft) * 2.5);
-    margin-top: var(--luft);
-}
-
-@media (min-width: 54rem) {
-    .kontakt-container {
-        grid-template-columns: 1.05fr 1.2fr;
-        gap: calc(var(--luft) * 3);
-        align-items: start;
-    }
-}
-
-.kontakt-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.kontakt-info p {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
-}
-
-.kontakt-metoder {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-.kontakt-metod-kort {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.1rem;
-    padding: 1.15rem 1.25rem;
-    background: var(--yta-2);
-    border: 1px solid var(--kant);
-    border-radius: var(--radie);
-    box-shadow: var(--skugga);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.kontakt-metod-kort:hover {
-    transform: translateY(-2px);
-    border-color: var(--primar);
-    box-shadow: var(--skugga-hover);
-}
-
-.kontakt-metod-ikon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    background: var(--yta-accent);
-    border-radius: 12px;
-    font-size: 1.25rem;
-    flex-shrink: 0;
-}
-
-.kontakt-metod-detalj {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.kontakt-metod-titel {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-dampad);
-}
-
-.kontakt-epost-rad {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.kopiera-knapp {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.65rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    font-family: inherit;
-    color: var(--primar);
-    background: var(--yta-accent);
-    border: 1px solid var(--kant);
-    border-radius: var(--radie-knapp);
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
-}
-
-.kopiera-knapp:hover {
-    background: var(--primar);
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-/* Formulärets kort */
-.kontakt-formular-yta {
-    background: var(--yta-2);
-    padding: calc(var(--luft) * 1.75);
-    border-radius: var(--radie);
-    border: 1px solid var(--kant);
-    box-shadow: var(--skugga);
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.kontakt-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.kontakt-form h3 {
-    font-size: 1.35rem;
-    margin-top: 0;
-    margin-bottom: 0.25rem;
-    color: var(--primar);
-}
-
-.form-grupp {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.form-grupp label {
-    font-size: 0.925rem;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.obligatorisk {
-    color: #ef4444;
-}
-
-.form-grupp input,
-.form-grupp textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-family: var(--font-huvud);
-    font-size: 0.975rem;
-    color: var(--text);
-    background-color: var(--yta);
-    border: 1px solid var(--kant);
-    border-radius: 10px;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-grupp input::placeholder,
-.form-grupp textarea::placeholder {
-    color: var(--text-dampad);
-    opacity: 0.75;
-}
-
-.form-grupp input:focus,
-.form-grupp textarea:focus {
-    outline: none;
-    border-color: var(--primar);
-    background-color: var(--yta-2);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
-}
-
-body.morkt .form-grupp input:focus,
-body.morkt .form-grupp textarea:focus {
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
-}
-
-.form-grupp textarea {
-    resize: vertical;
-    min-height: 110px;
-}
-
-.kontakt-skicka-knapp {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 700;
-    align-self: flex-start;
-    padding: 0.85rem 1.85rem;
-}
-
-.kontakt-skicka-knapp .skicka-pil {
-    font-size: 1.15rem;
-    transition: transform 0.2s ease;
-}
-
-.kontakt-skicka-knapp:hover .skicka-pil {
-    transform: translateX(4px);
-}
-
-/* Status- och bekräftelsemeddelande */
-.formular-status {
-    display: none;
-    font-size: 0.9375rem;
-    padding: 0.85rem 1rem;
-    border-radius: 8px;
-    line-height: 1.5;
-}
-
-.formular-status.succé {
-    display: block;
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
-}
-
-.formular-status.fel {
-    display: block;
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-}
-
-body.morkt .formular-status.succé {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border-color: rgba(16, 185, 129, 0.35);
-}
-
-body.morkt .formular-status.fel {
-    background: rgba(239, 68, 68, 0.15);
-    color: #fca5a5;
-    border-color: rgba(239, 68, 68, 0.35);
-}
-
-/* ==========================================================================
-   7 · Knappar, fokus och sidfot (Tillgänglighet och tangentbordsnavigering)
-   ========================================================================== */
-/* Tydlig fokusram när användaren navigerar med tangentbordet (Tab) */
-a:focus-visible,
-button:focus-visible {
-    outline: 3px solid var(--fokus);
-    outline-offset: 3px;
-    border-radius: 4px;
-}
-
-.knapp:focus-visible,
-.tema-knapp:focus-visible {
-    border-radius: var(--radie-knapp);
-}
-
-/* Sidfot */
-footer {
-    padding: calc(var(--luft) * 2.5) var(--luft);
-    text-align: center;
-    background: var(--yta-2);
-    border-top: 1px solid var(--kant);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-footer p {
-    margin: 0 auto;
-    font-size: 0.95rem;
-}
-
-/* ==========================================================================
-   8 · Större skärmar (Responsiv layout för surfplattor och datorer)
-   ========================================================================== */
-@media (min-width: 52rem) {
-    .sidhuvud {
-        padding: 1.1rem calc(var(--luft) * 2);
-    }
-
-    .sidhuvud-container {
-        flex-wrap: nowrap;
-        gap: 2rem;
-    }
-
-    .sidhuvud-branding {
-        flex: 0 0 auto;
-    }
-
-    .sidhuvud-branding h1 {
-        font-size: 1.45rem;
-    }
-
-    .sidhuvud-nav {
-        flex: 1 1 auto;
-        display: flex;
-        justify-content: center;
-    }
-
-    .sidhuvud-actions {
-        flex: 0 0 auto;
-    }
-
-    /* Kontakt visas som primär CTA till höger, döljs i mittlänkarna på större skärmar */
-    .nav-lank-kontakt {
-        display: none;
-    }
-
-    h1 {
-        font-size: 2.25rem;
-    }
-
-    .hero h2 {
-        font-size: 2.5rem;
-    }
-
-    /* Rutnätet får flera kolumner när det finns plats */
-    .rutnat {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    /* Om mig visas sida vid sida med bild och text */
-    .om-innehall {
-        flex-direction: row;
-        align-items: center;
-        gap: calc(var(--luft) * 2.5);
-    }
-
-    .om-bild {
-        max-width: 240px;
-        flex-shrink: 0;
-    }
-}
-
-/* Mobil- och surfplatteanpassning för sidhuvudet */
-@media (max-width: 51.99rem) {
-    .sidhuvud-container {
-        flex-wrap: wrap;
-        row-gap: 0.85rem;
-    }
-
-    .sidhuvud-branding {
-        flex: 1 1 auto;
-    }
-
-    .sidhuvud-branding h1 {
-        font-size: 1.25rem;
-    }
-
-    .sidhuvud-actions {
-        flex: 0 0 auto;
-    }
-
-    .sidhuvud-nav {
-        width: 100%;
-        order: 3;
-        padding-top: 0.65rem;
-        border-top: 1px solid var(--kant);
-    }
-
-    .nav-lankar {
-        justify-content: center;
-        gap: 0.5rem 1.15rem;
-        flex-wrap: wrap;
-    }
-
-    .nav-lank-kontakt {
-        display: list-item;
-    }
-}
-
-@media (max-width: 32rem) {
-    .sidhuvud-branding {
-        width: 100%;
-        text-align: center;
-    }
-
-    .sidhuvud-actions {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .sidhuvud-cta {
-        padding: 0.35rem 0.4rem 0.35rem 1rem;
-        font-size: 0.875rem;
-    }
-
-    .sidhuvud-cta-ikon {
-        width: 28px;
-        height: 28px;
-    }
-}
-
-@media (min-width: 64rem) {
-    main {
-        padding: 0 calc(var(--luft) * 2);
-    }
-
-    .hero {
-        padding: calc(var(--luft) * 4) 0;
-    }
-
-    .hero h2 {
-        font-size: 2.75rem;
-    }
-}
-
-/* ==========================================================================
-   9 · Mörkt läge (body.morkt tilldelar nya kontraststarka värden till variablerna)
-   ========================================================================== */
-body.morkt {
-    /* Färger – Mörkt läge (Alla färger uppfyller WCAG AA med minst 4,5:1 kontrast) */
-    --text: #f8fafc;               /* Krispig vit för rubriker och skarp text (kontrast > 15:1) */
-    --text-dampad: #cbd5e1;        /* Mjuk ljusgrå för brödtext (kontrast > 9:1 mot mörk bakgrund) */
-    --yta: #090d16;                /* Djup midnattsblå bakgrund */
-    --yta-2: #131b2e;              /* Mörk skifferyta för kort, sidhuvud och sidfot */
-    --yta-accent: #1e293b;         /* Mörkgrå/blå yta för ikoner och badges */
-    --primar: #60a5fa;             /* Ljus himmelsblå: utmärkt läsbarhet i mörkt läge */
-    --primar-hover: #93c5fd;       /* Ännu ljusare blå vid hover */
-    --accent: #3b82f6;             /* Klarblå knapp */
-    --accent-hover: #60a5fa;
-    --accent-text: #090d16;        /* Mörk text på ljus knapp för hög kontrast (7,8:1) */
-    --badge-bg: rgba(96, 165, 250, 0.15); /* Halvtransparent blå badge-bakgrund */
-    --badge-text: #93c5fd;         /* Ljusblå text på badge (kontrast > 10:1) */
-    --kant: #1e293b;               /* Diskret mörk linjefärg */
-    --fokus: #60a5fa;              /* Tydlig ljusblå fokusram i mörkt läge */
-    --skugga: 0 4px 20px -2px rgba(0, 0, 0, 0.5); /* Djupare skuggor i mörkt läge */
-    --skugga-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.7);
-}
-
-/* ==========================================================================
-   10 · Kreativ portfolioidentitet
-   Visuell omarbetning ovanpå befintliga komponenter; funktioner och markup
-   lämnas intakta.
-   ========================================================================== */
-:root {
-    --text: #20211f;
-    --text-dampad: #555650;
-    --yta: #f7f4ec;
-    --yta-2: #fffdf7;
-    --yta-accent: #f3e4d1;
-    --primar: #59335f;
-    --primar-hover: #75477b;
-    --accent: #d85d37;
-    --accent-hover: #b94425;
-    --accent-text: #fffaf3;
-    --badge-bg: #e7d8e9;
-    --badge-text: #4f2c55;
-    --kant: #ded8ca;
-    --fokus: #d85d37;
-    --skugga: 0 16px 45px rgba(54, 39, 34, .09);
-    --skugga-hover: 0 24px 55px rgba(54, 39, 34, .16);
-    --radie: 24px;
-}
-
-body {
-    background-image: radial-gradient(rgba(89, 51, 95, .10) .8px, transparent .8px);
-    background-size: 22px 22px;
-}
-
-h1, h2, h3 { color: var(--primar); }
-
-.sidhuvud {
-    background-color: rgba(247, 244, 236, .9);
-    border-bottom: 1px solid rgba(89, 51, 95, .15);
-    box-shadow: 0 5px 24px rgba(54, 39, 34, .05);
-}
-
-.sidhuvud-branding h1 { color: var(--primar); }
-.nav-lankar a:hover { color: var(--accent); }
-.nav-lankar a::after { background: var(--accent); }
-
-.tema-knapp {
-    background: var(--yta-2);
-    border-color: var(--kant);
-}
-
-.sidhuvud-cta, .knapp {
-    background: var(--accent);
-    box-shadow: 0 9px 22px rgba(216, 93, 55, .23);
-}
-
-.sidhuvud-cta:hover, .knapp:hover { background: var(--accent-hover); }
-.sidhuvud-cta-ikon { color: var(--accent); }
-
-main { max-width: 74rem; }
-
-section {
-    padding: clamp(3rem, 7vw, 6rem) 0;
-    border-bottom: 1px solid rgba(89, 51, 95, .16);
-}
-
-.hero {
-    position: relative;
-    isolation: isolate;
-    min-height: min(690px, calc(100vh - 90px));
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 6vw, 5.5rem);
-    margin: 2rem 0 1rem;
-    overflow: hidden;
-    border: 0;
-    border-radius: 36px;
-    background: linear-gradient(125deg, #f0e5ee 0%, #f7e9d9 52%, #f3d9c8 100%);
-    box-shadow: var(--skugga);
-}
-
-.hero::before, .hero::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.hero::before {
-    width: min(38vw, 440px);
-    aspect-ratio: 1;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%) rotate(-12deg);
-    border-radius: 48% 52% 58% 42% / 43% 41% 59% 57%;
-    background: linear-gradient(145deg, #643b69, #38263e);
-    box-shadow: 22px 24px 0 rgba(216, 93, 55, .78);
-}
-
-.hero::after {
-    width: min(24vw, 260px);
-    aspect-ratio: 1;
-    right: 10%;
-    top: 20%;
-    border: 2px solid rgba(255, 253, 247, .55);
-    border-radius: 50%;
-}
-
-.hero-badge {
-    color: var(--badge-text);
-    background: rgba(255, 253, 247, .75);
-    border: 1px solid rgba(89, 51, 95, .12);
-    letter-spacing: .09em;
-}
-
-.hero h2 {
-    max-width: 14ch;
-    font-size: clamp(2.8rem, 6.3vw, 5.6rem);
-    line-height: .99;
-    letter-spacing: -.065em;
-    color: #332638;
-    margin: .35rem 0 1.25rem;
-}
-
-.hero p {
-    max-width: 43ch;
-    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-    color: #51464f;
-    margin-bottom: 1.7rem;
-}
-
-.knapp { padding: .95rem 1.8rem; }
-
-section > h2, .kontakt-info h2 {
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    line-height: 1.05;
-    letter-spacing: -.05em;
-}
-
-#om .om-innehall {
-    padding: clamp(1.25rem, 4vw, 3rem);
-    background: var(--yta-2);
-    border: 1px solid var(--kant);
-    border-radius: 30px;
-    box-shadow: var(--skugga);
-}
-
-.om-bild {
-    max-width: 290px;
-    border: 7px solid #f0e5ee;
-    border-radius: 46% 46% 22px 22px;
-    box-shadow: 14px 14px 0 #e9c7b8;
-}
-
-.om-text p { font-size: clamp(1.05rem, 1.7vw, 1.25rem); }
-
-.rutnat { gap: 1.25rem; }
-
-#tjanster .kort, #projekt .kort {
-    position: relative;
-    overflow: hidden;
-    padding: clamp(1.35rem, 2.6vw, 2rem);
-    background: var(--yta-2);
-    border: 1px solid var(--kant);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(54, 39, 34, .06);
-}
-
-#tjanster .kort:nth-child(3n + 1) { border-top: 5px solid #d85d37; }
-#tjanster .kort:nth-child(3n + 2) { border-top: 5px solid #6d9279; }
-#tjanster .kort:nth-child(3n) { border-top: 5px solid #79577e; }
-.kort-ikon { border-radius: 16px; background: #f5e6d7; }
-#tjanster .kort:nth-child(3n + 2) .kort-ikon { background: #e2ece3; }
-#tjanster .kort:nth-child(3n) .kort-ikon { background: #eee4ef; }
-
-#projekt .kort img {
-    aspect-ratio: 16 / 11;
-    border: 0;
-    border-radius: 17px;
-}
-
-.kontakt-container {
-    padding: clamp(1.25rem, 4vw, 3rem);
-    border-radius: 30px;
-    background: #eee5ef;
-}
-
-.kontakt-metod-kort, .kontakt-formular-yta {
-    background: var(--yta-2);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(54, 39, 34, .07);
-}
-
-.kontakt-metod-ikon { background: #f5e6d7; }
-.kopiera-knapp { color: var(--primar); background: #eee4ef; }
-.kopiera-knapp:hover { background: var(--primar); }
-
-footer {
-    background: #332638;
-    border: 0;
-    padding: 2.5rem 1rem;
-}
-
-footer p { color: #f7f0e8; }
-
-body.morkt {
-    --text: #f5eee8;
-    --text-dampad: #d1c5d2;
-    --yta: #17131a;
-    --yta-2: #241d28;
-    --yta-accent: #382b3b;
-    --primar: #d3a8d8;
-    --primar-hover: #e4c4e7;
-    --accent: #f08a63;
-    --accent-hover: #ff9e78;
-    --accent-text: #251720;
-    --badge-bg: #382b3b;
-    --badge-text: #e4c4e7;
-    --kant: #443747;
-    --fokus: #ffad89;
-    --skugga: 0 16px 45px rgba(0, 0, 0, .28);
-    --skugga-hover: 0 24px 55px rgba(0, 0, 0, .42);
-    background-image: radial-gradient(rgba(228, 196, 231, .08) .8px, transparent .8px);
+    color-scheme: light;
+    --text: #29231f;
+    --muted: #69615b;
+    --paper: #faf8f4;
+    --surface: #fffdf9;
+    --surface-warm: #f4eee7;
+    --line: #e6ddd4;
+    --orange: #e85b35;
+    --orange-dark: #c94525;
+    --orange-pale: #f8e4d8;
+    --green: #31534a;
+    --shadow: 0 18px 50px rgba(46, 34, 26, .09);
+    --font: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius: 20px;
+    --max: 1160px;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { margin: 0; color: var(--text); background: var(--paper); font: 16px/1.7 var(--font); -webkit-font-smoothing: antialiased; }
+body.morkt { color-scheme: dark; --text:#f6f0e9; --muted:#c5b8ae; --paper:#111111; --surface:#1b1918; --surface-warm:#211b19; --line:#39312e; --orange:#ff7951; --orange-dark:#ff9978; --orange-pale:#39231c; --green:#a8c9ba; --shadow:0 18px 50px rgba(0,0,0,.28); }
+::selection { color: #fff; background: var(--orange); }
+a { color: inherit; text-underline-offset: 4px; }
+button, input, textarea { font: inherit; }
+img { display:block; max-width:100%; }
+h1,h2,h3,p,figure { margin-top:0; }
+h1,h2,h3 { line-height:1.14; letter-spacing:-.045em; }
+h2 { margin-bottom:0; font-size:clamp(2rem,4vw,3.3rem); }
+h3 { margin-bottom:.65rem; font-size:1.35rem; }
+p { color:var(--muted); }
+.skip-link { position:fixed; z-index:300; top:8px; left:8px; padding:.65rem 1rem; transform:translateY(-150%); background:var(--text); color:var(--paper); border-radius:8px; }
+.skip-link:focus { transform:translateY(0); }
+.scroll-progress { position:fixed; z-index:200; inset:0 0 auto; height:3px; pointer-events:none; }
+.scroll-progress span { display:block; width:100%; height:100%; transform:scaleX(0); transform-origin:left; background:var(--orange); }
+
+.sidhuvud { position:sticky; z-index:100; top:0; border-bottom:1px solid color-mix(in srgb,var(--line),transparent 25%); background:color-mix(in srgb,var(--paper),transparent 5%); backdrop-filter:blur(18px); }
+.sidhuvud-container { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; width:min(var(--max),calc(100% - 3rem)); min-height:84px; margin:auto; }
+.sidhuvud-branding { display:flex; flex-direction:column; flex-shrink:0; text-decoration:none; line-height:1.4; }
+.namn { font-size:1.05rem; font-weight:800; letter-spacing:-.04em; }
+.roll { color:var(--muted); font-size:.69rem; letter-spacing:.01em; }
+.sidhuvud-nav { margin-left:auto; }
+.nav-lankar { display:flex; align-items:center; gap:clamp(.8rem,2.2vw,1.8rem); margin:0; padding:0; list-style:none; }
+.nav-lankar a { position:relative; color:var(--muted); font-size:.83rem; font-weight:600; text-decoration:none; transition:color .2s ease; }
+.nav-lankar a:hover,.nav-lankar a:focus-visible { color:var(--orange-dark); }
+.sidhuvud-actions { display:flex; align-items:center; gap:.65rem; }
+.tema-knapp,.sidhuvud-cta,.knapp,.kopiera-knapp { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:0; border-radius:999px; font-weight:700; text-decoration:none; cursor:pointer; transition:transform .2s ease,background-color .2s ease,color .2s ease,border-color .2s ease; }
+.tema-knapp { padding:.6rem .8rem; border:1px solid var(--line); color:var(--text); background:var(--surface); font-size:.76rem; white-space:nowrap; }
+.tema-knapp:hover,.knapp:hover,.sidhuvud-cta:hover { transform:translateY(-2px); }
+.sidhuvud-cta { padding:.68rem 1rem; color:white; background:var(--text); font-size:.8rem; }
+.sidhuvud-cta:hover { color:white; background:var(--orange-dark); }
+
+main { overflow:hidden; }
+.hero { position:relative; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.75fr); align-items:center; gap:clamp(2rem,7vw,7rem); width:min(var(--max),calc(100% - 3rem)); min-height:660px; margin:2rem auto 0; padding:clamp(2.5rem,7vw,6rem); overflow:hidden; border-radius:28px; color:#fffaf5; background:linear-gradient(120deg,#e94b2e 0%,#f87535 49%,#8b2930 100%); box-shadow:0 26px 70px rgba(115,44,31,.19); }
+.hero::before { position:absolute; width:440px; height:440px; right:12%; bottom:-52%; border:1px solid rgba(255,255,255,.2); border-radius:50%; content:""; }
+.hero-copy { position:relative; z-index:2; max-width:650px; }
+.eyebrow { margin:0 0 .9rem; color:var(--orange-dark); font-size:.72rem; font-weight:800; letter-spacing:.13em; line-height:1.5; text-transform:uppercase; }
+.hero .eyebrow { display:flex; align-items:center; gap:.6rem; color:rgba(255,250,245,.9); }
+.status-dot { width:8px; height:8px; border-radius:50%; background:#d3f099; box-shadow:0 0 0 4px rgba(211,240,153,.17); }
+.hero h1 { max-width:11ch; margin:0 0 1.2rem; font-size:clamp(2.7rem,6vw,5.6rem); font-weight:700; line-height:.99; letter-spacing:-.075em; text-wrap:balance; }
+.hero-intro { max-width:51ch; margin-bottom:1.7rem; color:rgba(255,250,245,.9); font-size:clamp(1rem,1.4vw,1.12rem); line-height:1.8; }
+.hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:1.25rem; }
+.knapp { min-height:49px; padding:.8rem 1.2rem; color:white; background:var(--orange); font-size:.84rem; }
+.hero .knapp { color:#33221c; background:#fffaf4; }
+.hero .knapp:hover { color:#33221c; background:#f5dfd1; }
+.textlank { color:#fffaf5; font-size:.82rem; font-weight:700; text-decoration:none; }
+.textlank:hover { color:#ffe0cb; }
+.hero-meta { display:flex; flex-wrap:wrap; gap:1.35rem; margin-top:3rem; color:rgba(255,250,245,.78); font-size:.71rem; font-weight:600; }
+.hero-meta span+span::before { display:inline-block; width:4px; height:4px; margin:0 .8rem .16rem 0; border-radius:50%; background:#ffc07f; content:""; }
+.hero-portratt { position:relative; z-index:1; justify-self:end; width:min(100%,330px); margin:0; }
+.hero-portratt img { width:100%; height:clamp(380px,43vw,495px); object-fit:cover; object-position:center 36%; border:7px solid rgba(255,250,245,.92); border-radius:48% 48% 22px 22px; box-shadow:0 22px 48px rgba(53,24,24,.3); }
+.hero-portratt figcaption { position:absolute; right:-25px; bottom:25px; display:flex; align-items:center; gap:.7rem; padding:.75rem 1rem .75rem .75rem; border:1px solid rgba(255,255,255,.35); border-radius:14px; color:#fff; background:rgba(49,28,27,.62); backdrop-filter:blur(12px); font-size:.72rem; font-weight:700; line-height:1.4; }
+.hero-portratt figcaption small { color:rgba(255,255,255,.73); font-size:.65rem; font-weight:500; }
+.portrait-mark { display:grid; width:36px; height:36px; place-items:center; border-radius:50%; color:#33221c; background:#ffd09a; font-size:.65rem; }
+.hero-ornament { position:absolute; right:4%; top:4%; color:rgba(255,255,255,.11); font-size:clamp(3rem,8vw,7rem); font-weight:800; letter-spacing:-.1em; }
+
+.section { width:min(var(--max),calc(100% - 3rem)); margin:0 auto; padding:clamp(5rem,10vw,8rem) 0; scroll-margin-top:100px; }
+.section-heading { margin-bottom:2.5rem; }
+.section-heading .eyebrow { margin-bottom:.55rem; }
+.section-heading-wide { display:flex; align-items:end; justify-content:space-between; gap:2rem; }
+.section-intro { max-width:42ch; margin:0 0 .25rem; font-size:.95rem; }
+.om-innehall { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr); align-items:start; gap:clamp(2rem,8vw,7rem); padding-top:2rem; border-top:1px solid var(--line); }
+.om-copy { max-width:680px; }
+.lead { color:var(--text); font-size:clamp(1.2rem,2.4vw,1.75rem); font-weight:600; line-height:1.5; letter-spacing:-.035em; }
+.om-copy p:not(.lead) { max-width:66ch; }
+.about-note { padding:1.4rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+.about-note p { margin:0; font-size:.87rem; }
+.about-note strong { color:var(--text); }
+.note-symbol { display:grid; width:36px; height:36px; margin-bottom:.9rem; place-items:center; border-radius:50%; color:var(--orange-dark); background:var(--orange-pale); font-weight:800; }
+
+.section-education { padding-top:4rem; }
+.education-card { position:relative; padding:clamp(1.5rem,4vw,2.5rem); border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); }
+.education-topline { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.4rem; }
+.education-icon { display:grid; width:48px; height:48px; place-items:center; border-radius:14px; color:#fff; background:var(--green); font-size:.73rem; font-weight:800; letter-spacing:-.03em; }
+.education-date { color:var(--muted); font-size:.78rem; font-weight:600; }
+.education-card h3 { margin-bottom:.2rem; font-size:clamp(1.45rem,3vw,2rem); }
+.education-card>p:last-child { margin:1rem 0 0; max-width:70ch; }
+.education-school { margin:0; color:var(--orange-dark); font-size:.9rem; font-weight:700; }
+.education-school span { margin:0 .3rem; color:var(--muted); }
+.skills-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-top:1rem; }
+.skill-group { min-height:300px; padding:1.5rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+.skill-group-worked { background:var(--surface-warm); }
+.skill-label { display:flex; align-items:center; gap:.55rem; margin:0 0 1.35rem; color:var(--muted); font-size:.67rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+.skill-label span { color:var(--orange-dark); font-size:.72rem; }
+.skill-group h3 { margin-bottom:.6rem; font-size:1.2rem; }
+.skill-group>p:not(.skill-label) { min-height:92px; font-size:.83rem; line-height:1.7; }
+.tag-list,.project-tags,.lia-topics { display:flex; flex-wrap:wrap; gap:.45rem; }
+.tag-list span,.project-tags span,.lia-topics span { padding:.35rem .6rem; border:1px solid var(--line); border-radius:99px; color:var(--muted); font-size:.65rem; font-weight:600; line-height:1.45; }
+.skills-footnote { margin:1rem 0 0; font-size:.72rem; }
+
+.section-projects { padding-top:4rem; }
+.project-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem; margin-top:2.5rem; }
+.project-card { overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); transition:transform .25s ease,box-shadow .25s ease; }
+.project-card:hover { transform:translateY(-5px); box-shadow:var(--shadow); }
+.project-featured { grid-column:1/-1; display:grid; grid-template-columns:1.1fr .9fr; }
+.project-image { position:relative; display:block; overflow:hidden; background:var(--surface-warm); }
+.project-image img { width:100%; height:260px; object-fit:cover; transition:transform .45s ease; }
+.project-featured .project-image img { height:100%; min-height:320px; }
+.project-card:hover .project-image img { transform:scale(1.035); }
+.image-index { position:absolute; top:14px; left:14px; display:grid; width:36px; height:36px; place-items:center; border:1px solid rgba(255,255,255,.5); border-radius:50%; color:#fff; background:rgba(31,27,24,.55); font-size:.7rem; font-weight:700; backdrop-filter:blur(8px); }
+.project-copy { padding:1.4rem; }
+.project-type { margin:0 0 .55rem; color:var(--orange-dark); font-size:.67rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+.project-copy h3 { margin-bottom:.65rem; }
+.project-copy>p:not(.project-type) { font-size:.84rem; }
+.project-tags { margin-top:1.15rem; }
+.project-tags span { font-size:.62rem; }
+
+.lia-section { display:grid; grid-template-columns:minmax(0,1fr) minmax(180px,.42fr); align-items:center; gap:2rem; width:min(var(--max),calc(100% - 3rem)); margin:0 auto; padding:clamp(2rem,6vw,4.5rem); overflow:hidden; border-radius:28px; color:#fffaf5; background:#263c37; scroll-margin-top:100px; }
+.lia-content { max-width:680px; }
+.lia-section .eyebrow { color:#f5a27e; }
+.lia-section h2 { margin-bottom:1rem; color:#fffaf5; }
+.lia-section p:not(.eyebrow) { max-width:62ch; color:rgba(255,250,245,.8); }
+.lia-topics { margin:1.3rem 0 1.7rem; }
+.lia-topics span { border-color:rgba(255,255,255,.24); color:#fffaf5; }
+.knapp-light { color:#283b34; background:#fffaf5; }
+.knapp-light:hover { color:#283b34; background:#f6d9c8; }
+.lia-aside { display:flex; flex-direction:column; align-items:flex-end; gap:.25rem; color:#e8ad86; }
+.lia-aside span:first-child { font-size:clamp(3.2rem,7vw,6rem); font-weight:800; letter-spacing:-.09em; line-height:1; }
+.lia-aside span:nth-child(2) { color:rgba(255,250,245,.65); font-size:.65rem; font-weight:700; letter-spacing:.14em; }
+.lia-line { width:100%; max-width:220px; height:1px; margin-top:1.25rem; background:rgba(255,255,255,.22); }
+
+.section-contact { padding-bottom:5rem; }
+.kontakt-container { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(2rem,7vw,6rem); padding:clamp(1.5rem,4vw,3rem); border:1px solid var(--line); border-radius:var(--radius); background:var(--surface-warm); }
+.kontakt-info .lead { font-size:clamp(1.15rem,2vw,1.5rem); }
+.kontakt-metoder { display:grid; gap:.75rem; margin-top:1.8rem; }
+.kontakt-metod-kort { display:flex; align-items:center; gap:.8rem; padding:1rem; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+.kontakt-metod-ikon { display:grid; width:38px; height:38px; flex:0 0 auto; place-items:center; border-radius:12px; color:var(--orange-dark); background:var(--orange-pale); font-size:.85rem; font-weight:800; }
+.kontakt-metod-titel { display:block; margin-bottom:.15rem; color:var(--muted); font-size:.68rem; font-weight:700; }
+.kontakt-metod-detalj a { overflow-wrap:anywhere; color:var(--text); font-size:.8rem; font-weight:600; }
+.kontakt-metod-detalj a:hover { color:var(--orange-dark); }
+.kontakt-epost-rad { display:flex; align-items:center; flex-wrap:wrap; gap:.6rem; }
+.kopiera-knapp { padding:.35rem .65rem; border:1px solid var(--line); color:var(--text); background:var(--surface); font-size:.67rem; }
+.kopiera-knapp:hover { border-color:var(--orange); color:var(--orange-dark); }
+.kontakt-formular-yta { min-width:0; padding:1.4rem; border:1px solid var(--line); border-radius:16px; background:var(--surface); }
+.kontakt-formular-yta h3 { font-size:1.15rem; }
+.form-fallback { margin:0; font-size:.8rem; }
+.form-fallback a { color:var(--orange-dark); font-weight:700; }
+footer { display:flex; justify-content:space-between; gap:1rem; width:min(var(--max),calc(100% - 3rem)); margin:auto; padding:1.5rem 0 2.3rem; border-top:1px solid var(--line); }
+footer p,footer a { margin:0; color:var(--muted); font-size:.72rem; }
+footer a { font-weight:700; text-decoration:none; }
+
+:focus-visible { outline:3px solid var(--orange); outline-offset:4px; }
+.reveal-on-scroll { opacity:0; transform:translateY(16px); transition:opacity .55s ease,transform .55s ease; }
+.reveal-on-scroll.is-visible { opacity:1; transform:none; }
+
+@media (max-width:900px) {
+    .sidhuvud-container { width:calc(100% - 2rem); gap:.8rem; }
+    .nav-lankar { gap:.85rem; }
+    .nav-lankar a { font-size:.75rem; }
+    .sidhuvud-cta { display:none; }
+    .hero { width:calc(100% - 2rem); min-height:570px; padding:clamp(2rem,5vw,3.5rem); gap:2rem; }
+    .hero-portratt { width:min(100%,280px); }
+    .hero-portratt img { height:400px; }
+    .section,.lia-section,footer { width:calc(100% - 2rem); }
+}
+@media (max-width:680px) {
+    html { scroll-padding-top:80px; }
+    .sidhuvud-container { min-height:72px; flex-wrap:wrap; padding:.65rem 0; }
+    .sidhuvud-branding { max-width:58%; }
+    .roll { font-size:.61rem; }
+    .sidhuvud-actions { margin-left:auto; }
+    .tema-knapp { padding:.52rem .65rem; font-size:.7rem; }
+    .sidhuvud-nav { order:3; width:100%; margin:0; overflow-x:auto; scrollbar-width:none; }
+    .sidhuvud-nav::-webkit-scrollbar { display:none; }
+    .nav-lankar { justify-content:space-between; min-width:360px; padding:.1rem 0 .2rem; }
+    .nav-lankar a { font-size:.72rem; }
+    .hero { grid-template-columns:1fr; gap:2rem; min-height:0; margin-top:1rem; padding:2.3rem 1.5rem 1.5rem; border-radius:22px; }
+    .hero h1 { max-width:13ch; font-size:clamp(2.7rem,12vw,4.3rem); }
+    .hero-meta { margin-top:1.8rem; }
+    .hero-portratt { justify-self:center; width:min(82%,280px); }
+    .hero-portratt img { height:clamp(340px,105vw,410px); }
+    .hero-portratt figcaption { right:-13px; bottom:20px; }
+    .hero-ornament { top:auto; right:5%; bottom:32%; font-size:3.5rem; }
+    .section { padding:4.5rem 0; }
+    .section-heading { margin-bottom:1.7rem; }
+    .section-heading-wide { display:block; }
+    .section-intro { margin-top:1rem; }
+    .om-innehall { grid-template-columns:1fr; gap:1.25rem; }
+    .skills-grid,.project-grid { grid-template-columns:1fr; }
+    .skill-group { min-height:0; }
+    .skill-group>p:not(.skill-label) { min-height:0; }
+    .project-featured { grid-column:auto; display:block; }
+    .project-featured .project-image img { height:240px; min-height:0; }
+    .project-image img { height:240px; }
+    .lia-section { grid-template-columns:1fr; gap:1.5rem; padding:2rem 1.5rem; border-radius:22px; }
+    .lia-aside { align-items:flex-start; }
+    .lia-line { max-width:100%; }
+    .kontakt-container { grid-template-columns:1fr; padding:1.2rem; }
+    .kontakt-formular-yta { padding:1rem; }
+}
+@media (max-width:380px) {
+    .tema-knapp span { display:none; }
+    .sidhuvud-branding .namn { font-size:.94rem; }
+    .roll { font-size:.55rem; }
+    .hero { width:calc(100% - 1.25rem); padding-inline:1.15rem; }
+    .section,.lia-section,footer { width:calc(100% - 1.5rem); }
+}
+@media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+    .reveal-on-scroll { opacity:1; transform:none; }
 }
-
-body.morkt .sidhuvud { background-color: rgba(23, 19, 26, .9); }
-body.morkt .hero { background: linear-gradient(125deg, #332638, #392a39 56%, #4a302c); }
-body.morkt .hero::before { background: linear-gradient(145deg, #d488db, #754d7d); box-shadow: 22px 24px 0 rgba(240, 138, 99, .65); }
-body.morkt .hero h2 { color: #fff4ec; }
-body.morkt .hero p { color: #e1d5dc; }
-body.morkt .hero-badge { color: #f2d8f4; background: rgba(36, 29, 40, .8); border-color: #59465c; }
-body.morkt #om .om-innehall { background: var(--yta-2); }
-body.morkt .om-bild { border-color: #382b3b; box-shadow: 14px 14px 0 #754d54; }
-body.morkt #tjanster .kort:nth-child(3n + 1) { border-top-color: #f08a63; }
-body.morkt #tjanster .kort:nth-child(3n + 2) { border-top-color: #8bb99a; }
-body.morkt #tjanster .kort:nth-child(3n) { border-top-color: #bc91c5; }
-body.morkt .kort-ikon, body.morkt #tjanster .kort:nth-child(n) .kort-ikon,
-body.morkt .kontakt-metod-ikon, body.morkt .kopiera-knapp { background: var(--yta-accent); }
-body.morkt .kontakt-container { background: #241d28; }
-body.morkt footer { background: #100d12; }
-body.morkt .sidhuvud-cta-ikon { background: #241d28; color: var(--accent); }
-
-@media (max-width: 52rem) {
-    .hero { min-height: 0; padding: 4rem 1.75rem; margin-top: 1.25rem; }
-    .hero::before { width: 190px; right: -22px; top: auto; bottom: 8px; transform: rotate(-12deg); opacity: .23; }
-    .hero::after { display: none; }
-    .hero h2 { max-width: 13ch; font-size: clamp(2.7rem, 11vw, 4.5rem); }
-    .hero p { max-width: 34ch; }
-    .kontakt-container { gap: 1.5rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { transition-duration: .01ms !important; }
-}
-
-/* Porträtt i introduktionen */
-.hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(220px, .85fr);
-    align-items: center;
-    gap: clamp(1.5rem, 4vw, 4rem);
-}
-
-.hero-copy {
-    position: relative;
-    z-index: 1;
-}
-
-.hero-portratt {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 360px);
-    justify-self: end;
-    margin: 0 1rem 0 0;
-}
-
-.hero-portratt img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: center 20%;
-    border: 7px solid rgba(255, 253, 247, .86);
-    border-radius: 46% 46% 24px 24px;
-    box-shadow: 0 20px 45px rgba(41, 27, 43, .22);
-}
-
-body.morkt .hero-portratt img {
-    border-color: rgba(36, 29, 40, .9);
-}
-
-@media (max-width: 52rem) {
-    .hero {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 2rem;
-    }
-
-    .hero-portratt {
-        width: min(66%, 230px);
-        justify-self: center;
-        margin: 0;
-    }
-}
-
-/* Ny färgriktning: djup petrol, syrlig lime och varm korall. */
-:root {
-    --text: #172b32;
-    --text-dampad: #52636a;
-    --yta: #f6f5ed;
-    --yta-2: #fffef9;
-    --yta-accent: #e8f1d3;
-    --primar: #173b4a;
-    --primar-hover: #28596a;
-    --accent: #d7f36b;
-    --accent-hover: #c2e34a;
-    --accent-text: #17313a;
-    --badge-bg: #e7f3ca;
-    --badge-text: #294821;
-    --kant: #d8dfd8;
-    --fokus: #db634e;
-    --skugga: 0 16px 45px rgba(23, 59, 74, .09);
-    --skugga-hover: 0 24px 55px rgba(23, 59, 74, .17);
-}
-
-h1, h2, h3 { color: var(--primar); }
-
-body {
-    background-color: var(--yta);
-    background-image: radial-gradient(rgba(23, 59, 74, .11) .8px, transparent .8px);
-    background-size: 23px 23px;
-}
-
-.sidhuvud { background-color: rgba(246, 245, 237, .92); }
-.sidhuvud-cta, .knapp { color: var(--accent-text); }
-.sidhuvud-cta-ikon { color: var(--primar); }
-
-.hero {
-    background: linear-gradient(135deg, #dceef0 0%, #edf3dd 52%, #d4e8dc 100%);
-    border: 1px solid rgba(23, 59, 74, .08);
-}
-
-.hero::before {
-    background: linear-gradient(145deg, #c7ee6d, #a9da4d);
-    box-shadow: 22px 24px 0 rgba(219, 99, 78, .72);
-}
-
-.hero::after { border-color: rgba(23, 59, 74, .2); }
-.hero h2 { color: #173b4a; }
-.hero p { color: #40565c; }
-
-.hero-portratt {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    min-height: 530px;
-    margin-right: 0;
-}
-
-.hero-portratt img {
-    width: auto;
-    height: clamp(390px, 42vw, 560px);
-    max-width: 100%;
-    aspect-ratio: auto;
-    object-fit: contain;
-    object-position: center;
-    border: 8px solid var(--yta-2);
-    border-radius: 24px;
-    box-shadow: 0 20px 45px rgba(23, 59, 74, .2);
-}
-
-.scroll-progress {
-    position: fixed;
-    z-index: 200;
-    inset: 0 0 auto;
-    height: 4px;
-    pointer-events: none;
-}
-
-.scroll-progress span {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #db634e;
-    transform: scaleX(0);
-    transform-origin: left center;
-}
-
-.reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(22px);
-    transition: opacity .65s ease, transform .65s cubic-bezier(.2, .7, .2, 1);
-}
-
-.reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#om .om-innehall { background: var(--yta-2); }
-.om-bild { border-color: #d7f36b; box-shadow: 14px 14px 0 #db634e; }
-#tjanster .kort:nth-child(3n + 1) { border-top-color: #db634e; }
-#tjanster .kort:nth-child(3n + 2) { border-top-color: #85a994; }
-#tjanster .kort:nth-child(3n) { border-top-color: #d7b843; }
-.kort-ikon { background: #e8f1d3; }
-#tjanster .kort:nth-child(3n + 2) .kort-ikon { background: #e2eee6; }
-#tjanster .kort:nth-child(3n) .kort-ikon { background: #f5efd7; }
-.kontakt-container { background: #e3eeee; }
-.kontakt-metod-ikon, .kopiera-knapp { background: #e8f1d3; }
-footer { background: #173b4a; }
-
-body.morkt {
-    --text: #f3f5ec;
-    --text-dampad: #c5d1ce;
-    --yta: #111e25;
-    --yta-2: #1b2a31;
-    --yta-accent: #2b3b37;
-    --primar: #c7ec78;
-    --primar-hover: #dcf69a;
-    --accent: #c7ec78;
-    --accent-hover: #daf694;
-    --accent-text: #172b32;
-    --badge-bg: #304238;
-    --badge-text: #d7f39b;
-    --kant: #34464b;
-    --fokus: #ff9a82;
-    --skugga: 0 16px 45px rgba(0, 0, 0, .28);
-    --skugga-hover: 0 24px 55px rgba(0, 0, 0, .42);
-    background-image: radial-gradient(rgba(199, 236, 120, .09) .8px, transparent .8px);
-}
-
-body.morkt .sidhuvud { background-color: rgba(17, 30, 37, .93); }
-body.morkt .hero { background: linear-gradient(135deg, #1c343d, #263b34 58%, #243b3b); }
-body.morkt .hero::before { background: linear-gradient(145deg, #c7ec78, #84b94c); box-shadow: 22px 24px 0 rgba(219, 99, 78, .6); }
-body.morkt .hero h2 { color: #f3f5ec; }
-body.morkt .hero p { color: #d3dfd8; }
-body.morkt .hero-badge { background: #304238; border-color: #4b604b; color: #d7f39b; }
-body.morkt .kontakt-container { background: #1b3037; }
-body.morkt footer { background: #0b151a; }
-body.morkt .om-bild { border-color: #c7ec78; box-shadow: 14px 14px 0 #a84d43; }
-body.morkt .sidhuvud-cta-ikon { background: #111e25; color: var(--accent); }
-
-@media (max-width: 52rem) {
-    .hero-portratt { min-height: 0; width: 100%; }
-    .hero-portratt img { height: clamp(320px, 85vw, 430px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
-}
-
-/* Hero inspired by the supplied reference: warm gradient, dark frame, clear hierarchy. */
-:root {
-    --text: #201d1b;
-    --text-dampad: #5b5652;
-    --yta: #f4f0e9;
-    --yta-2: #fffaf5;
-    --yta-accent: #f6e1d6;
-    --primar: #292320;
-    --primar-hover: #4d3831;
-    --accent: #ef5a35;
-    --accent-hover: #d94927;
-    --accent-text: #fffaf5;
-    --badge-bg: rgba(255, 250, 245, .18);
-    --badge-text: #fffaf5;
-    --kant: #e2d9d0;
-    --fokus: #f05b36;
-    --skugga: 0 18px 48px rgba(41, 28, 22, .1);
-    --skugga-hover: 0 24px 54px rgba(41, 28, 22, .18);
-}
-
-body {
-    color: var(--text);
-    background-color: var(--yta);
-    background-image: radial-gradient(rgba(41, 35, 32, .08) .8px, transparent .8px);
-    background-size: 23px 23px;
-}
-
-h1, h2, h3 { color: var(--primar); }
-.sidhuvud { background-color: rgba(244, 240, 233, .94); }
-.sidhuvud-cta, .knapp { background: var(--accent); color: var(--accent-text); }
-.sidhuvud-cta:hover, .knapp:hover { background: var(--accent-hover); color: var(--accent-text); }
-.sidhuvud-cta-ikon { color: var(--accent); }
-
-.hero {
-    grid-template-columns: minmax(0, 1.08fr) minmax(260px, .82fr);
-    gap: clamp(2rem, 5vw, 4.75rem);
-    min-height: 590px;
-    padding: clamp(3rem, 6vw, 5rem) clamp(1.75rem, 5vw, 4.75rem);
-    border-radius: 30px;
-    background: linear-gradient(122deg, #f04c2d 0%, #ff762b 46%, #7b2028 100%);
-    box-shadow: 0 24px 60px rgba(103, 39, 27, .2);
-}
-
-.hero::before {
-    width: min(34vw, 390px);
-    right: 5%;
-    border-radius: 46% 54% 48% 52% / 55% 42% 58% 45%;
-    background: linear-gradient(145deg, #7d2028, #431b24);
-    box-shadow: 18px 18px 0 rgba(255, 178, 74, .55);
-}
-
-.hero::after {
-    width: min(25vw, 280px);
-    right: 8%;
-    top: 12%;
-    border-color: rgba(255, 247, 235, .35);
-}
-
-.hero-badge {
-    color: #fffaf5;
-    background: rgba(32, 21, 19, .2);
-    border-color: rgba(255, 250, 245, .28);
-    font-size: .74rem;
-    letter-spacing: .1em;
-}
-
-.hero h2 {
-    max-width: 17ch;
-    margin: .75rem 0 1.1rem;
-    color: #fffaf5;
-    font-size: clamp(2rem, 4vw, 3.15rem);
-    line-height: 1.1;
-    letter-spacing: -.045em;
-    text-wrap: balance;
-}
-
-.hero p {
-    max-width: 38ch;
-    margin-bottom: 1.5rem;
-    color: rgba(255, 250, 245, .92);
-    font-size: clamp(1rem, 1.35vw, 1.12rem);
-    line-height: 1.72;
-}
-
-.hero .knapp {
-    padding: .8rem 1.35rem;
-    background: #fffaf5;
-    color: #30221e;
-    box-shadow: 0 8px 20px rgba(66, 23, 21, .18);
-}
-
-.hero .knapp:hover { background: #f9dfd0; }
-
-.hero-portratt {
-    width: min(100%, 360px);
-    min-height: 0;
-    justify-self: end;
-    align-items: center;
-}
-
-.hero-portratt img {
-    width: auto;
-    height: clamp(390px, 38vw, 500px);
-    max-width: 100%;
-    object-fit: contain;
-    object-position: center;
-    border: 6px solid rgba(255, 250, 245, .92);
-    border-radius: 22px;
-    box-shadow: 0 20px 40px rgba(41, 20, 19, .26);
-}
-
-section { border-bottom-color: rgba(41, 35, 32, .14); }
-#om .om-innehall { border-radius: 22px; }
-.om-bild { border-color: #f3c6af; box-shadow: 12px 12px 0 #ef5a35; }
-.kontakt-container { background: #f0dfd5; }
-footer { background: #201d1b; }
-
-body.morkt {
-    --text: #f7f1eb;
-    --text-dampad: #d0c5bc;
-    --yta: #111112;
-    --yta-2: #1c1b1b;
-    --yta-accent: #342622;
-    --primar: #fff5ec;
-    --primar-hover: #ffd7c3;
-    --accent: #ff7047;
-    --accent-hover: #ff8b67;
-    --accent-text: #251a17;
-    --badge-bg: rgba(255, 250, 245, .18);
-    --badge-text: #fffaf5;
-    --kant: #383231;
-    --fokus: #ff9a78;
-    --skugga: 0 18px 48px rgba(0, 0, 0, .3);
-    --skugga-hover: 0 24px 54px rgba(0, 0, 0, .45);
-    background-image: radial-gradient(rgba(255, 250, 245, .06) .8px, transparent .8px);
-}
-
-body.morkt .sidhuvud { background-color: rgba(17, 17, 18, .94); }
-body.morkt .hero { background: linear-gradient(122deg, #f04c2d 0%, #ff762b 46%, #7b2028 100%); }
-body.morkt .hero::before { background: linear-gradient(145deg, #7d2028, #431b24); }
-body.morkt .hero h2 { color: #fffaf5; }
-body.morkt .hero p { color: rgba(255, 250, 245, .92); }
-body.morkt .hero-portratt img { border-color: rgba(255, 250, 245, .85); }
-body.morkt .kontakt-container { background: #2b211e; }
-body.morkt footer { background: #090909; }
-body.morkt .om-bild { border-color: #e3a48b; box-shadow: 12px 12px 0 #ef5a35; }
-body.morkt .sidhuvud-cta-ikon { background: #1c1b1b; color: var(--accent); }
-
-@media (max-width: 52rem) {
-    .hero {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 2rem;
-        min-height: 0;
-        padding: 3rem 1.5rem;
-    }
-
-    .hero h2 {
-        max-width: 19ch;
-        font-size: clamp(1.95rem, 8vw, 2.7rem);
-        line-height: 1.12;
-    }
-
-    .hero p { max-width: 40ch; font-size: 1rem; }
-    .hero-portratt { width: min(100%, 340px); justify-self: center; }
-    .hero-portratt img { height: clamp(360px, 92vw, 460px); }
-}
-
-/* Ljus, varmvit bas som låter den orange hero-ytan stå ut. */
-:root {
-    --text: #201d1b;
-    --text-dampad: #5b5652;
-    --yta: #faf8f4;
-    --yta-2: #fffdf9;
-    --yta-accent: #f8e9df;
-    --primar: #292320;
-    --primar-hover: #4d3831;
-    --accent: #ef5a35;
-    --accent-hover: #d94927;
-    --accent-text: #fffaf5;
-    --badge-bg: #f8e9df;
-    --badge-text: #71351f;
-    --kant: #e4d9d0;
-    --fokus: #f05b36;
-    --skugga: 0 18px 48px rgba(41, 28, 22, .1);
-    --skugga-hover: 0 24px 54px rgba(41, 28, 22, .18);
-}
-
-body {
-    color: var(--text);
-    background-color: var(--yta);
-    background-image: radial-gradient(rgba(71, 43, 33, .06) .8px, transparent .8px);
-}
-
-.sidhuvud { background-color: rgba(250, 248, 244, .94); }
-section { border-bottom-color: rgba(41, 35, 32, .14); }
-.kontakt-container { background: #f8ede5; }
-.kort-ikon, .kontakt-metod-ikon, .kopiera-knapp { background: #f8e9df; color: #292320; }
-.kopiera-knapp:hover { background: var(--accent); color: #fffaf5; }
-
-body.morkt {
-    --yta: #080808;
-    --yta-2: #151414;
-    --yta-accent: #241a18;
-    --kant: #302b29;
-    background-image: radial-gradient(rgba(255, 250, 245, .035) .8px, transparent .8px);
-}
-
-body.morkt .sidhuvud { background-color: rgba(8, 8, 8, .97); }
-body.morkt .kontakt-container { background: #181312; }
