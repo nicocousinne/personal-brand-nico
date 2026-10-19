@@ -1563,3 +1563,20 @@ body.morkt {
 
 body.morkt .sidhuvud { background-color: rgba(8, 8, 8, .97); }
 body.morkt .kontakt-container { background: #181312; }
+
+
+/* Vit text i det inbäddade kontaktformuläret. */
+#hubspot-kontaktformular .hs-form label,
+#hubspot-kontaktformular .hs-form p,
+#hubspot-kontaktformular .hs-form legend,
+#hubspot-kontaktformular .hs-form .hs-richtext,
+#hubspot-kontaktformular .hs-form .hs-main-font-element,
+#hubspot-kontaktformular .hs-form .hs-form-required {
+    color: #fff !important;
+}
+
+#hubspot-kontaktformular .hs-form input:not([type="submit"]),
+#hubspot-kontaktformular .hs-form textarea,
+#hubspot-kontaktformular .hs-form select {
+    color: #fff !important;
+}
