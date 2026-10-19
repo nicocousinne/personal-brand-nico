@@ -1522,17 +1522,44 @@ body.morkt .sidhuvud-cta-ikon { background: #1c1b1b; color: var(--accent); }
     .hero-portratt img { height: clamp(360px, 92vw, 460px); }
 }
 
-/* Varmare och något mörkare sidbakgrund som balanserar den orange hero-ytan. */
+/* Nästan svart, varm bas som låter den orange hero-ytan stå ut. */
 :root {
-    --yta: #e7d4c8;
-    --yta-2: #fff9f3;
-    --yta-accent: #f2e1d5;
-    --kant: #d6c2b5;
+    --text: #f5efe9;
+    --text-dampad: #d0c5bc;
+    --yta: #171312;
+    --yta-2: #211c1a;
+    --yta-accent: #34231f;
+    --primar: #fff3e9;
+    --primar-hover: #ffcfb9;
+    --accent: #ef5a35;
+    --accent-hover: #ff7753;
+    --accent-text: #fff9f4;
+    --badge-bg: rgba(255, 250, 245, .18);
+    --badge-text: #fffaf5;
+    --kant: #3d302c;
+    --fokus: #ff9a78;
+    --skugga: 0 18px 48px rgba(0, 0, 0, .34);
+    --skugga-hover: 0 24px 54px rgba(0, 0, 0, .5);
 }
 
 body {
     background-color: var(--yta);
-    background-image: radial-gradient(rgba(71, 43, 33, .1) .8px, transparent .8px);
+    background-image: radial-gradient(rgba(255, 250, 245, .045) .8px, transparent .8px);
 }
 
-.sidhuvud { background-color: rgba(231, 212, 200, .95); }
+.sidhuvud { background-color: rgba(23, 19, 18, .96); }
+section { border-bottom-color: rgba(255, 250, 245, .12); }
+.kontakt-container { background: #211a18; }
+.kort-ikon, .kontakt-metod-ikon, .kopiera-knapp { background: #34231f; color: #ffd0bd; }
+.kopiera-knapp:hover { background: var(--accent); color: #fff9f4; }
+
+body.morkt {
+    --yta: #080808;
+    --yta-2: #151414;
+    --yta-accent: #241a18;
+    --kant: #302b29;
+    background-image: radial-gradient(rgba(255, 250, 245, .035) .8px, transparent .8px);
+}
+
+body.morkt .sidhuvud { background-color: rgba(8, 8, 8, .97); }
+body.morkt .kontakt-container { background: #181312; }
