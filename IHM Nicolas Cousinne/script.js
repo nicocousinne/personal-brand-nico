@@ -47,13 +47,19 @@ if (copyButton) {
 const progressFill = document.querySelector("#scroll-progress-fill");
 const ambientLayer = document.querySelector(".ambient-bg");
 const scrollOrb = document.querySelector(".scroll-orb");
+const heroPortrait = document.querySelector(".hero-portratt img");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 function updateReadingProgress() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
     const boundedProgress = Math.min(1, Math.max(0, progress));
     if (progressFill) progressFill.style.transform = `scaleX(${boundedProgress})`;
 
-    if (ambientLayer && scrollOrb && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!reduceMotion.matches && heroPortrait) {
+        heroPortrait.style.setProperty("--hero-parallax-y", `${Math.min(24, window.scrollY * 0.035)}px`);
+    }
+
+    if (ambientLayer && scrollOrb && !reduceMotion.matches) {
         const orbSize = scrollOrb.offsetWidth;
         const x = Math.max(12, Math.min(window.innerWidth - orbSize - 12, window.innerWidth * (0.73 - 0.5 * boundedProgress)));
         const y = window.innerHeight * (0.07 + 0.58 * boundedProgress);
@@ -75,6 +81,28 @@ window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
 window.addEventListener("resize", scheduleScrollUpdate);
 updateReadingProgress();
 
+// Låt projektkortet följa pekarens rörelse mycket lätt på enheter med mus/trackpad.
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduceMotion.matches) {
+    document.querySelectorAll(".project-card").forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+            const bounds = card.getBoundingClientRect();
+            const x = Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width));
+            const y = Math.min(1, Math.max(0, (event.clientY - bounds.top) / bounds.height));
+            card.style.setProperty("--tilt-x", `${((x - 0.5) * 3.2).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-y", `${((0.5 - y) * 2.4).toFixed(2)}deg`);
+            card.style.setProperty("--spot-x", `${(x * 100).toFixed(1)}%`);
+            card.style.setProperty("--spot-y", `${(y * 100).toFixed(1)}%`);
+            card.style.setProperty("--image-shift-x", `${((0.5 - x) * 7).toFixed(1)}px`);
+            card.style.setProperty("--image-shift-y", `${((0.5 - y) * 5).toFixed(1)}px`);
+        });
+        card.addEventListener("pointerleave", () => {
+            ["--tilt-x", "--tilt-y", "--image-shift-x", "--image-shift-y"].forEach((property) => card.style.removeProperty(property));
+            card.style.setProperty("--spot-x", "50%");
+            card.style.setProperty("--spot-y", "50%");
+        });
+    });
+}
+
 // Skifta bakgrundens färgton när besökaren rör sig mellan sidans sektioner.
 if ("IntersectionObserver" in window) {
     const sections = document.querySelectorAll("main > section[id]");
@@ -87,7 +115,7 @@ if ("IntersectionObserver" in window) {
     sections.forEach((section) => sectionObserver.observe(section));
 }
 
-if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if ("IntersectionObserver" in window && !reduceMotion.matches) {
     const elements = document.querySelectorAll(".section, .project-card, .lia-section");
     elements.forEach((element) => element.classList.add("reveal-on-scroll"));
     const observer = new IntersectionObserver((entries, currentObserver) => {
