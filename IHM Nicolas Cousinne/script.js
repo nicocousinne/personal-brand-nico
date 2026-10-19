@@ -59,3 +59,34 @@ if (kopiera) {
     kopiera.addEventListener("click", kopieraMail);
 }
 
+// Läsprogress högst upp på sidan.
+const progressFyllning = document.querySelector("#scroll-progress-fill");
+
+function uppdateraLasprogress() {
+    if (!progressFyllning) return;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+    progressFyllning.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+}
+
+window.addEventListener("scroll", uppdateraLasprogress, { passive: true });
+window.addEventListener("resize", uppdateraLasprogress);
+uppdateraLasprogress();
+
+// Låt sektioner och kort tona in när de kommer in i vyn.
+if ("IntersectionObserver" in window) {
+    const elementerAttVisa = document.querySelectorAll("main section:not(.hero), .kort");
+    elementerAttVisa.forEach((element) => element.classList.add("reveal-on-scroll"));
+
+    const visningsObserver = new IntersectionObserver((poster) => {
+        poster.forEach((post) => {
+            if (post.isIntersecting) {
+                post.target.classList.add("is-visible");
+                visningsObserver.unobserve(post.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    elementerAttVisa.forEach((element) => visningsObserver.observe(element));
+}
+
