@@ -1208,3 +1208,178 @@ body.morkt .hero-portratt img {
         margin: 0;
     }
 }
+
+/* Ny färgriktning: djup petrol, syrlig lime och varm korall. */
+:root {
+    --text: #172b32;
+    --text-dampad: #52636a;
+    --yta: #f6f5ed;
+    --yta-2: #fffef9;
+    --yta-accent: #e8f1d3;
+    --primar: #173b4a;
+    --primar-hover: #28596a;
+    --accent: #d7f36b;
+    --accent-hover: #c2e34a;
+    --accent-text: #17313a;
+    --badge-bg: #e7f3ca;
+    --badge-text: #294821;
+    --kant: #d8dfd8;
+    --fokus: #db634e;
+    --skugga: 0 16px 45px rgba(23, 59, 74, .09);
+    --skugga-hover: 0 24px 55px rgba(23, 59, 74, .17);
+}
+
+h1, h2, h3 { color: var(--primar); }
+
+body {
+    background-color: var(--yta);
+    background-image: radial-gradient(rgba(23, 59, 74, .11) .8px, transparent .8px);
+    background-size: 23px 23px;
+}
+
+.sidhuvud { background-color: rgba(246, 245, 237, .92); }
+.sidhuvud-cta, .knapp { color: var(--accent-text); }
+.sidhuvud-cta-ikon { color: var(--primar); }
+
+.hero {
+    background: linear-gradient(135deg, #dceef0 0%, #edf3dd 52%, #d4e8dc 100%);
+    border: 1px solid rgba(23, 59, 74, .08);
+}
+
+.hero::before {
+    background: linear-gradient(145deg, #c7ee6d, #a9da4d);
+    box-shadow: 22px 24px 0 rgba(219, 99, 78, .72);
+}
+
+.hero::after { border-color: rgba(23, 59, 74, .2); }
+.hero h2 { color: #173b4a; }
+.hero p { color: #40565c; }
+
+.hero-portratt {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 530px;
+    margin-right: 0;
+}
+
+.hero-portratt img {
+    width: auto;
+    height: clamp(390px, 42vw, 560px);
+    max-width: 100%;
+    aspect-ratio: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    filter: drop-shadow(0 18px 18px rgba(23, 59, 74, .18));
+    animation: portrait-float 5.5s ease-in-out infinite;
+}
+
+.hero-sticker {
+    position: absolute;
+    top: 19%;
+    right: -3%;
+    display: grid;
+    place-content: center;
+    width: 104px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #db634e;
+    color: #fffdf5;
+    font-size: .75rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: .08em;
+    text-align: center;
+    transform: rotate(11deg);
+    box-shadow: 0 10px 20px rgba(23, 59, 74, .16);
+}
+
+@keyframes portrait-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+}
+
+.scroll-progress {
+    position: fixed;
+    z-index: 200;
+    inset: 0 0 auto;
+    height: 4px;
+    pointer-events: none;
+}
+
+.scroll-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #db634e;
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .65s ease, transform .65s cubic-bezier(.2, .7, .2, 1);
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#om .om-innehall { background: var(--yta-2); }
+.om-bild { border-color: #d7f36b; box-shadow: 14px 14px 0 #db634e; }
+#tjanster .kort:nth-child(3n + 1) { border-top-color: #db634e; }
+#tjanster .kort:nth-child(3n + 2) { border-top-color: #85a994; }
+#tjanster .kort:nth-child(3n) { border-top-color: #d7b843; }
+.kort-ikon { background: #e8f1d3; }
+#tjanster .kort:nth-child(3n + 2) .kort-ikon { background: #e2eee6; }
+#tjanster .kort:nth-child(3n) .kort-ikon { background: #f5efd7; }
+.kontakt-container { background: #e3eeee; }
+.kontakt-metod-ikon, .kopiera-knapp { background: #e8f1d3; }
+footer { background: #173b4a; }
+
+body.morkt {
+    --text: #f3f5ec;
+    --text-dampad: #c5d1ce;
+    --yta: #111e25;
+    --yta-2: #1b2a31;
+    --yta-accent: #2b3b37;
+    --primar: #c7ec78;
+    --primar-hover: #dcf69a;
+    --accent: #c7ec78;
+    --accent-hover: #daf694;
+    --accent-text: #172b32;
+    --badge-bg: #304238;
+    --badge-text: #d7f39b;
+    --kant: #34464b;
+    --fokus: #ff9a82;
+    --skugga: 0 16px 45px rgba(0, 0, 0, .28);
+    --skugga-hover: 0 24px 55px rgba(0, 0, 0, .42);
+    background-image: radial-gradient(rgba(199, 236, 120, .09) .8px, transparent .8px);
+}
+
+body.morkt .sidhuvud { background-color: rgba(17, 30, 37, .93); }
+body.morkt .hero { background: linear-gradient(135deg, #1c343d, #263b34 58%, #243b3b); }
+body.morkt .hero::before { background: linear-gradient(145deg, #c7ec78, #84b94c); box-shadow: 22px 24px 0 rgba(219, 99, 78, .6); }
+body.morkt .hero h2 { color: #f3f5ec; }
+body.morkt .hero p { color: #d3dfd8; }
+body.morkt .hero-badge { background: #304238; border-color: #4b604b; color: #d7f39b; }
+body.morkt .hero-sticker { background: #e77b62; }
+body.morkt .kontakt-container { background: #1b3037; }
+body.morkt footer { background: #0b151a; }
+body.morkt .om-bild { border-color: #c7ec78; box-shadow: 14px 14px 0 #a84d43; }
+
+@media (max-width: 52rem) {
+    .hero-portratt { min-height: 0; width: 100%; }
+    .hero-portratt img { height: clamp(320px, 85vw, 430px); }
+    .hero-sticker { top: 8%; right: 8%; width: 82px; font-size: .65rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-portratt img { animation: none; }
+    .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
+}
