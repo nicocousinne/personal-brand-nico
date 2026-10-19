@@ -55,6 +55,18 @@ window.addEventListener("scroll", updateReadingProgress, { passive: true });
 window.addEventListener("resize", updateReadingProgress);
 updateReadingProgress();
 
+// Skifta bakgrundens färgton när besökaren rör sig mellan sidans sektioner.
+if ("IntersectionObserver" in window) {
+    const sections = document.querySelectorAll("main > section[id]");
+    const sectionObserver = new IntersectionObserver((entries) => {
+        const activeSection = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (activeSection) document.body.dataset.activeSection = activeSection.target.id;
+    }, { rootMargin: "-40% 0px -48% 0px", threshold: 0 });
+    sections.forEach((section) => sectionObserver.observe(section));
+}
+
 if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const elements = document.querySelectorAll(".section, .project-card, .lia-section");
     elements.forEach((element) => element.classList.add("reveal-on-scroll"));
