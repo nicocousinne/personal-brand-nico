@@ -2,6 +2,17 @@ const themeButton = document.querySelector("#tema");
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 const emailAddress = "Nico.cousinne@gmail.com";
 
+const qrDialog = document.querySelector("#qr-dialog");
+const qrOpenButton = document.querySelector("#visa-qr");
+const qrCloseButton = document.querySelector("#stang-qr");
+if (qrDialog && qrOpenButton && qrCloseButton) {
+    qrOpenButton.addEventListener("click", () => qrDialog.showModal());
+    qrCloseButton.addEventListener("click", () => qrDialog.close());
+    qrDialog.addEventListener("click", (event) => {
+        if (event.target === qrDialog) qrDialog.close();
+    });
+}
+
 function applyTheme(isDark) {
     document.body.classList.toggle("morkt", isDark);
     if (themeButton) {
