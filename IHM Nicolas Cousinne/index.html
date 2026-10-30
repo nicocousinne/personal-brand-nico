@@ -48,9 +48,17 @@
             <div class="sidhuvud-actions">
                 <button id="tema" class="tema-knapp" type="button" aria-label="Växla till mörkt läge" aria-pressed="false">☾ <span>Mörkt läge</span></button>
                 <a href="#kontakt" class="sidhuvud-cta">Kontakt <span aria-hidden="true">↗</span></a>
+                <button class="sidhuvud-cta qr-knapp" type="button" aria-haspopup="dialog" aria-controls="qr-dialog" id="visa-qr">QR-kod <span aria-hidden="true">▦</span></button>
             </div>
         </div>
     </header>
+
+    <dialog class="qr-dialog" id="qr-dialog" aria-labelledby="qr-rubrik">
+        <div class="qr-dialog-header"><div><p class="eyebrow">Dela min webbplats</p><h2 id="qr-rubrik">Skanna QR-koden</h2></div><button class="qr-stang" type="button" aria-label="Stäng QR-koden" id="stang-qr">×</button></div>
+        <p>Rikta kameran mot koden för att besöka min hemsida.</p>
+        <img src="img/qr-hemsida.png" alt="QR-kod till Nicolas Cousinnes hemsida" width="540" height="540">
+        <a class="qr-url" href="https://nicolascousinne.vercel.app/" target="_blank" rel="noopener noreferrer">nicolascousinne.vercel.app ↗</a>
+    </dialog>
 
     <main id="innehall">
         <section class="hero" id="toppen" aria-labelledby="hero-rubrik">
